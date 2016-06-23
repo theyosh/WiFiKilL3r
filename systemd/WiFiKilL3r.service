@@ -1,0 +1,9 @@
+[Unit]
+Description=WiFiKilL3r script
+
+[Timer]
+OnCalendar=*-*-* *:0/1:00
+Persistent=false
+
+[Install]
+WantedBy=timers.target
