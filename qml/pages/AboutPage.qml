@@ -38,14 +38,14 @@ Page {
         anchors.fill: parent
 
         // Tell SilicaFlickable the height of its content.
-        contentHeight: column.height
+        contentHeight: column.height + Theme.paddingMedium
 
         // Place our content in a Column.  The PageHeader is always placed at the top
         // of the page, followed by our content.
         Column {
             id: column
             width: aboutpage.width
-            spacing: Theme.paddingLarge
+            spacing: Theme.paddingMedium
             PageHeader {
                 title: qsTr("About WiFiKilL3r")
             }

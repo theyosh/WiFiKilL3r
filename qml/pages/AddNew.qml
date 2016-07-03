@@ -41,31 +41,30 @@ Page {
 
     SilicaListView {
         id: wifiInfoList
-
+        contentHeight: wifiInfoList.height + Theme.paddingMedium
         header: PageHeader {
             title: qsTr("Add trusted network")
         }
 
         model: wifiDevice
-
         anchors.fill: parent
         delegate: Item {
             width: parent.width
             height: Theme.itemSizeMedium
 
             Column {
+                spacing: Theme.paddingMedium
                 anchors.fill: parent
-                anchors.topMargin: Theme.paddingLarge
-                anchors.bottomMargin: Theme.paddingLarge
-                anchors.rightMargin: Theme.paddingLarge
-                anchors.leftMargin: Theme.paddingLarge
+                anchors.topMargin: Theme.paddingMedium
+                anchors.bottomMargin: Theme.paddingMedium
+                anchors.rightMargin: Theme.paddingMedium
+                anchors.leftMargin: Theme.paddingMedium
 
                 TextSwitch {
                     text: '<b>' + modelData.name + '</b>'
                     description: qsTr('bssid') + ': ' + modelData.bssid
                     checked: wifiKillerApp.is_trusted_network(modelData.name + '(' + modelData.bssid + ')')
                     onCheckedChanged: {
-                        //console.log("toggle network " + modelData.name + '(' + modelData.bssid + ')' + " -> " + checked)
                         wifiKillerApp.save_trusted_network(modelData.name + '(' + modelData.bssid + ')',checked)
                     }
                 }

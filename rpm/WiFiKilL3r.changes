@@ -8,6 +8,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Wed Jul 03 2016 TheYOSH <theyosh@theyosh.nl> 0.2-1
+- Added a reconnect button. This will pause the KilL3r for 20 seconds and enabled WiFi to reconnect to known networks with 1 press
+- Better visual feedback for WiFi and KilL3r status buttons
+- Updated some cosmetic visuals.
+- Removed old debug code
+
 * Wed Jun 22 2016 TheYOSH <theyosh@theyosh.nl> 0.1-1
 - Initial version. Beta state
 

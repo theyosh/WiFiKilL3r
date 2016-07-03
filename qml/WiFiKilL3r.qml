@@ -42,14 +42,11 @@ ApplicationWindow
     property variant last_update: 0
     property bool killerrunning: false
     property bool wifienabled: false
-    property string version: '0.1'
+    property int reconnecting: 0
+    property string version: '0.2'
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
-
-    function toggle_wifi(state) {
-        wifiDevice.setPowered(state)
-    }
 
     function notificationMessage(title,message) {
         notification.summary = title;
@@ -65,13 +62,20 @@ ApplicationWindow
         pythonBridge.save_trusted_network(name,save)
     }
 
+    function reconnect() {
+        if (wifiKillerApp.reconnecting != 1) {
+            wifiKillerApp.reconnecting = 1
+            wifiKillerApp.killerrunning = false
+            wifiDevice.setPowered(true)
+        }
+    }
+
     Python {
         id: pythonBridge
 
         Component.onCompleted: {
             addImportPath(Qt.resolvedUrl('python'));
             importModule('WiFiKilL3r', function () {});
-            //cron_enabled();
         }
 
         onError: {
@@ -88,31 +92,27 @@ ApplicationWindow
         function cron_enabled() {
             call('WiFiKilL3r.is_cron_enabled', [], function(enabled) {
                 killerData.cronenabled = enabled;
-                //console.log('WiFiKilL3r.is_cron_enabled: ' + killerData.cronenabled);
             });
         }
 
         function is_trusted_network(name) {
-            var trusted = call_sync('WiFiKilL3r.is_trusted_network',[name]);
-            //console.log('WiFiKilL3r.is_trusted_network: ' + name + ' = ' + trusted);
-            return trusted
+            return call_sync('WiFiKilL3r.is_trusted_network',[name]);
         }
 
         function save_trusted_network(name,save) {
-            //console.log('WiFiKilL3r.save_trusted_network: ' + name + ' = ' + save);
             call_sync('WiFiKilL3r.save_trusted_network',[name,save]);
         }
 
         function check_wifi() {
-            //console.log('WiFiKilL3r.run_cron');
-            wifienabled = call_sync('WiFiKilL3r.run_cron',[]);
+            wifiKillerApp.wifienabled = call_sync('WiFiKilL3r.run_cron',[]);
             if (wifienabled !== wifiDevice.powered) {
-                wifiDevice.setPowered(wifienabled);
-                if (!wifienabled) {
-                       notificationMessage('WifiKilL3r status:','Wifi is disabled due to leaving trusted networks!')
+                wifiDevice.setPowered(wifiKillerApp.wifienabled);
+                if (!wifiKillerApp.wifienabled) {
+                    notificationMessage('WifiKilL3r status:','Wifi is disabled due to leaving trusted networks!')
+                    wifiKillerApp.reconnecting = 0
                 }
             }
-            last_update = new Date()
+            wifiKillerApp.last_update = new Date()
         }
     }
 
@@ -126,11 +126,11 @@ ApplicationWindow
         name: "wifi"
 
         onTechnologiesChanged: {
-            wifienabled = wifiDevice.powered
+            wifiKillerApp.wifienabled = wifiDevice.powered
         }
 
         onPoweredChanged: {
-            wifienabled = wifiDevice.powered
+            wifiKillerApp.wifienabled = wifiDevice.powered
         }
     }
 
@@ -152,5 +152,17 @@ ApplicationWindow
         repeat: true
         triggeredOnStart: true
         onTriggered: pythonBridge.check_wifi()
+    }
+
+    Timer {
+        id: reconnectTimer
+        interval: 20000
+        running: wifiKillerApp.reconnecting == 1
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: {
+            wifiKillerApp.reconnecting = 2
+            wifiKillerApp.killerrunning = true
+        }
     }
 }

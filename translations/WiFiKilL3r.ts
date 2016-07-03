@@ -88,11 +88,31 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Current WiFiKilL3r status</source>
+        <source>Update trusted networks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Update trusted networks</source>
+        <source>Reconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reconnecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reconnect WiFi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>KilL3r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current KilL3r status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

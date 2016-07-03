@@ -58,7 +58,7 @@ Page {
             id: column
 
             width: mainpage.width
-            spacing: Theme.paddingLarge
+            spacing: Theme.paddingMedium
             PageHeader {
                 title: qsTr("WiFiKilL3r")
             }
@@ -84,37 +84,38 @@ Page {
 
             TextSwitch {
                 id: wifirunning
+                automaticCheck: false
                 checked: wifiKillerApp.wifienabled
-                //busy: wifiKillerApp.killerData.wifirunning
                 text: qsTr("WiFi") + " " + (checked ? qsTr("enabled") :qsTr("disabled"))
                 description: qsTr("Current WiFi status")
-                onCheckedChanged: {
-                    wifiDevice.setPowered(checked)
+                onClicked: {
+                    wifiDevice.setPowered(!wifiKillerApp.wifienabled)
                 }
             }
 
             TextSwitch {
                 id: killerrunning
-                text: qsTr("WiFiKilL3r") + " " + (wifiKillerApp.killerrunning ? qsTr("enabled") :qsTr("disabled"))
+                automaticCheck: false
+                text: qsTr("KilL3r") + " " + (wifiKillerApp.killerrunning ? qsTr("enabled") :qsTr("disabled"))
                 checked: wifiKillerApp.killerrunning
-                description: qsTr("Current WiFiKilL3r status")
-                onCheckedChanged: {
-                    wifiKillerApp.killerrunning = checked
+                description: qsTr("Current KilL3r status")
+                onClicked: {
+                    wifiKillerApp.killerrunning = !wifiKillerApp.killerrunning
                 }
             }
-/*
+
             TextSwitch {
-                id: cronenabled
-                checked: wifiKillerApp.killerData.cronenabled
-                text: "Cron" + " " + (checked ? qsTr("enabled") :qsTr("disabled"))
-                description: qsTr("Current cron status")
-                onCheckedChanged: {
-                    wifiKillerApp.python.call('WiFiKilL3r.toggle_cron_job', [], function() {
-                        wifiKillerApp.python.killer_running()
-                    });
+                id: reconnect
+                automaticCheck: false
+                checked: false
+                busy: wifiKillerApp.reconnecting == 1
+                text: qsTr("Reconnect WiFi")
+                description: wifiKillerApp.reconnecting == 0 ? qsTr("Reconnect") : wifiKillerApp.reconnecting == 1 ? qsTr("Reconnecting...") : qsTr("Reconnected")
+                onClicked: {
+                    wifiKillerApp.reconnect()
                 }
             }
-*/
+
             TextField {
                 id: lastUpdateField
                 x: Theme.paddingLarge

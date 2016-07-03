@@ -32,12 +32,8 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 CoverBackground {
-    function toggle() {
-        wifiKillerApp.killerrunning = !wifiKillerApp.killerrunning
-    }
-
     Label {
-        id: label
+        id: title
         anchors {
             left: parent.left
             right: parent.right
@@ -50,7 +46,7 @@ CoverBackground {
     }
 
     Label {
-        id: labell
+        id: version
         anchors.centerIn: parent
         font.pixelSize: Theme.fontSizeSmall
         text: "\n\n\n\n" + qsTr("version") + " " + wifiKillerApp.version
@@ -64,8 +60,12 @@ CoverBackground {
     CoverActionList {
         id: coverAction
         CoverAction {
+            iconSource: "image://theme/icon-cover-sync"
+            onTriggered: wifiKillerApp.reconnect()
+        }
+        CoverAction {
             iconSource: "image://theme/icon-cover-" + (wifiKillerApp.killerrunning ? 'pause' : 'play')
-            onTriggered: toggle()
+            onTriggered: wifiKillerApp.killerrunning = !wifiKillerApp.killerrunning
         }
     }
 }
