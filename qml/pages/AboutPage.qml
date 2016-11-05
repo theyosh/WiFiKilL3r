@@ -64,7 +64,21 @@ Page {
 
             Label {
                 id: body
-                text: qsTr('This app will monitor your WiFi status, and will disable WiFi when your phone is not connected to a trusted network.\nTo start monitoring hit the \'WiFiKiLl3r\' button. When it lits up, the monitor is running. It will check your WiFi status every 1 minute. It will show the last monitor date below.\n\nYou can add new trusted networks by scanning them in the Update trusted networks menu. WiFi needs to be enabled and the KilL3r not running.\nFor now, this app needs to be running, does not have a background deamon yet.\n\nWiFiKilL3r app is created by TheYOSH https://theyosh.nl\n(c) 2016')
+                text: qsTr('This app will monitor the WiFi status of your device, and will disable it when your phone is not connected to a trusted network. It will show a notification when your WiFi is being shut down.
+
+- You can enable or disable WiFi by tapping on the WiFi indicator
+- You can enable or disable the WiFi KilL3r daemon by tapping on the KilL3r indicator
+- The app will show the last run time on the bottom of the app
+
+Use the menu item \'Manage trusted networks\' in the topmenu to add or remove trusted WiFi networks. Make sure WiFi is enabled!. Tap in the WiFi name to add or remove from the trusted list. Updates are instantly!
+
+On the coverpage you have the option to reconnect your WiFi, and enable/disable the background daemon
+
+*Why*
+This app is created in order to protect your mobile device from being tracked by wifitrackers in citymalls and other public locations. The idea is that when you leave your trusted networks, there is no need to keep WiFi running. So this app will shutdown the WiFi device for you. This way it will save battery power, but more important, you can\'t be tracked!
+
+WiFiKilL3r app is created by TheYOSH https://theyosh.nl
+(c) 2016')
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
                 anchors {

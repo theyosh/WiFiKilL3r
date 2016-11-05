@@ -12,29 +12,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This app will monitor your WiFi status, and will disable WiFi when your phone is not connected to a trusted network.
-To start monitoring hit the &apos;WiFiKiLl3r&apos; button. When it lits up, the monitor is running. It will check your WiFi status every 1 minute. It will show the last monitor date below.
+        <source>This app will monitor the WiFi status of your device, and will disable it when your phone is not connected to a trusted network. It will show a notification when your WiFi is being shut down.
 
-You can add new trusted networks by scanning them in the Update trusted networks menu. WiFi needs to be enabled and the KilL3r not running.
-For now, this app needs to be running, does not have a background deamon yet.
+- You can enable or disable WiFi by tapping on the WiFi indicator
+- You can enable or disable the WiFi KilL3r daemon by tapping on the KilL3r indicator
+- The app will show the last run time on the bottom of the app
+
+Use the menu item &apos;Manage trusted networks&apos; in the topmenu to add or remove trusted WiFi networks. Make sure WiFi is enabled!. Tap in the WiFi name to add or remove from the trusted list. Updates are instantly!
+
+On the coverpage you have the option to reconnect your WiFi, and enable/disable the background daemon
+
+*Why*
+This app is created in order to protect your mobile device from being tracked by wifitrackers in citymalls and other public locations. The idea is that when you leave your trusted networks, there is no need to keep WiFi running. So this app will shutdown the WiFi device for you. This way it will save battery power, but more important, you can&apos;t be tracked!
 
 WiFiKilL3r app is created by TheYOSH https://theyosh.nl
 (c) 2016</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>AddNew</name>
-    <message>
-        <source>Add trusted network</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please, turn WiFi on</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>bssid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -45,16 +37,12 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>version</source>
+        <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainPage</name>
-    <message>
-        <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>WiFiKilL3r</source>
         <translation type="unfinished"></translation>
@@ -76,10 +64,6 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Last update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>WiFi</source>
         <translation type="unfinished"></translation>
     </message>
@@ -88,31 +72,38 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Update trusted networks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reconnect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reconnecting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reconnected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reconnect WiFi</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>KilL3r</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Current KilL3r status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About WiFiKilL3r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage trusted networks</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NetworksPage</name>
+    <message>
+        <source>Please, turn WiFi on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add trusted network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bssid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1,160 +1,237 @@
 # -*- coding: utf-8 -*-
 
-#import pyotherside
 import dbus
 import subprocess
 import re
 import argparse
-from os.path import expanduser
+import os
+import shutil
+import logging
+import logging.handlers
+import time
 
-HOME_FOLDER = expanduser('~')
-CONFIG_FILE = HOME_FOLDER + '/.wifikiller'
-CRON_JOB = '* * * * * /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r.py -a run_cron'
+DEBUG = False
+
+HOME_FOLDER = os.path.expanduser('~')
+WIFIKILLER_FOLDER = HOME_FOLDER + '/.WiFiKilL3r'
+TRUSTED_NETWORKS = WIFIKILLER_FOLDER + '/valid_networks'
+LOG_FILE = WIFIKILLER_FOLDER + '/WiFiKilL3r.log'
+LAST_RUN_FILE = WIFIKILLER_FOLDER + '/last_run'
 DBUS_WIFI = 'dbus-send --system --print-reply --dest=net.connman /net/connman/technology/wifi'
+CRON_TYPE = 'systemd'
+CRON_TIME_OUT_ERROR = 10 * 60
 
-def notification(title = 'WifiKilL3r status:',message = 'Wifi is disabled due to leaving trusted networks!'):
-    bus = dbus.SessionBus()
-    object = bus.get_object('org.freedesktop.Notifications','/org/freedesktop/Notifications')
-    wifikiller = dbus.Interface(object,'org.freedesktop.Notifications')
-    wifikiller.Notify('WiFiKilL3r',
-                 0,
-                 '/usr/share/WiFiKilL3r/qml/images/WiFiKilL3r.png',
-                 title,
-                 message,
-                 dbus.Array(['default', '']),
-                 dbus.Dictionary({'x-nemo-preview-body': message,
-                                  'x-nemo-preview-summary': title,
-                                  'category': 'x-nemo.simple.notifications'},
-                                  signature='sv'),
-                 0)
+logging.basicConfig(
+  level=logging.INFO,
+  format= '[%(asctime)s] %(levelname)s - %(message)s',
+  datefmt='%d-%m-%Y %H:%M:%S'
+)
+
+logger = logging.getLogger('WiFiKilL3r')
+formatter = logging.Formatter('[%(asctime)s] %(levelname)s - %(message)s', datefmt="%d-%m-%Y %H:%M:%S")
+handler = logging.handlers.TimedRotatingFileHandler(LOG_FILE, when='midnight',interval=1, backupCount=30)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+if DEBUG:
+  logger.setLevel(logging.DEBUG)
+
+def notification(title = 'WifiKilL3r status',message = 'Wifi is disabled due to leaving trusted networks!'):
+  bus = dbus.SessionBus()
+  object = bus.get_object('org.freedesktop.Notifications','/org/freedesktop/Notifications')
+  wifikiller = dbus.Interface(object,'org.freedesktop.Notifications')
+  wifikiller.Notify('WiFiKilL3r',
+                     0,
+                     '/usr/share/WiFiKilL3r/qml/images/WiFiKilL3r.png',
+                     title,
+                     message,
+                     dbus.Array(['default', '']),
+                     dbus.Dictionary({'x-nemo-preview-body': message,
+                              'x-nemo-preview-summary': title,
+                              'category': 'x-nemo.simple.notifications'},
+                              signature='sv'),
+                     0)
+  logger.info('%s: %s' % (title, message,))
 
 def get_trusted_networks():
-    content = []
-    try:
-        with open(HOME_FOLDER + '/.valid_networks') as f:
-            content = f.read().splitlines()
-    except:
-        pass
+  content = []
+  try:
+    with open(TRUSTED_NETWORKS) as f:
+      content = f.read().splitlines()
+  except:
+    # File does not exists, return 'nothing'
+    logger.debug('%s file does not exists yet' % (TRUSTED_NETWORKS,))
 
-    #print('Valid networks:')
-    #print(content)
-    return content
+  logger.debug('Loaded %s trusted networks' % (len(content),))
+  return content
 
 def is_trusted_network(name):
-    #print('Check netmwork name: ' + str(name))
-    return name in get_trusted_networks()
+  logger.debug('Check if %s is in trusted networks' % (name,))
+  return name in get_trusted_networks()
 
 def save_trusted_network(name,save):
-    trusted_networks = get_trusted_networks()
-    if save and name not in trusted_networks:
-        trusted_networks.append(name)
+  logger.debug('Update trusted network list with %s %s' % ('adding' if save else 'deleting', name,))
 
-    try:
-        with open(HOME_FOLDER + '/.valid_networks','w+') as f:
-            for trusted_network in trusted_networks:
-                if not save and name == trusted_network:
-                    continue
+  trusted_networks = get_trusted_networks()
+  if save and name not in trusted_networks:
+    trusted_networks.append(name)
 
-                f.write(trusted_network + "\n")
-    except:
-        pass
+  try:
+    with open(TRUSTED_NETWORKS,'w+') as f:
+      for trusted_network in trusted_networks:
+        if not save and name == trusted_network:
+          continue
 
-def get_cron_job_data():
-    try:
-        crondata = str(subprocess.check_output('/usr/bin/crontab -l 2>/dev/null', shell=True).strip())
-    except:
-        crondata = ''
-
-    return crondata
-
-def is_cron_enabled():
-    crondata = get_cron_job_data()
-    #print('search for: ' + CRON_JOB)
-    cron_enabled = crondata.find(CRON_JOB) > -1
-    if cron_enabled:
-        #print('Cron job is enabled')
-        pass
-    else:
-        #print('Cron job is not enabled')
-        pass
-    return cron_enabled
-
-def enable_cron_job():
-    if not is_cron_enabled():
-        current_cron_data = get_cron_job_data()
-        current_cron_data += '\n' + CRON_JOB
-        subprocess.check_output('echo "' + current_cron_data + '" | /usr/bin/crontab -', shell=True)
-
-def disable_cron_job():
-    if is_cron_enabled():
-        current_cron_data = get_cron_job_data()
-        new_cron_data = current_cron_data.replace(CRON_JOB,'')
-        subprocess.check_output('echo "' + new_cron_data + '" | /usr/bin/crontab -', shell=True)
-
-def toggle_cron_job():
-    if is_cron_enabled():
-        enable_cron_job()
-    else:
-        disable_cron_job()
+        f.write(trusted_network + "\n")
+  except:
+    pass
 
 def get_wifi_status():
-    try:
-        current_wifi =  str(subprocess.check_output('/usr/sbin/iw dev wlan0 link', shell=True).strip())
-        regex = re.compile(r'Connected to (?P<mac>[^ ]+).*SSID: (?P<ssid>[^\\n]+)')
-        data = re.search(regex, current_wifi)
-        if data is not None:
-            current_wifi = data.group('ssid') + '(' + data.group('mac') + ')'
-    except:
-        current_wifi = ''
+  try:
+    current_wifi =  str(subprocess.check_output('/usr/sbin/iw dev wlan0 link', shell=True).strip())
+    regex = re.compile(r'Connected to (?P<mac>[^ ]+).*SSID: (?P<ssid>[^\\n]+)')
+    data = re.search(regex, current_wifi)
+    if data is not None:
+      current_wifi = data.group('ssid') + '(' + data.group('mac') + ')'
+  except:
+    current_wifi = ''
 
-    #print('Current wifi status: ' + current_wifi)
-    return current_wifi
+  logger.debug('Connected to WiFi network: %s' % (current_wifi,))
+  return current_wifi
 
 def is_wifi_enabled():
-    #print(DBUS_WIFI + ' net.connman.Technology.GetProperties')
-    data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.GetProperties', shell=True).strip())
-    p = re.compile(r'string "Powered"\n\s+variant\s+boolean true')
-    re.search(p, data)
-    if data is not None:
-        #print('Wifi is currently running...')
-        return True
-    else:
-        #print ('Wifi is already offline!')
-        return False
+  data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.GetProperties', shell=True).strip())
+  p = re.compile(r'string "Powered"\n\s+variant\s+boolean true')
+  re.search(p, data)
+  logger.debug('Wifi is %s' % ('enabled' if data else 'disabled',))
+  return True if data is not None else False
 
 def disable_wifi():
-    if is_wifi_enabled():
-        data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:false', shell=True))
-    #print('Disable wifi:')
-    #print(data)
+  if is_wifi_enabled():
+    logger.debug('Disable wifi')
+    data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:false', shell=True))
 
 def enable_wifi():
-    if not is_wifi_enabled():
-        data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:true', shell=True))
-    #print('Enable wifi:')
-    #print(data)
+  if not is_wifi_enabled():
+    logger.debug('Enable wifi')
+    data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:true', shell=True))
 
-def run_cron():
-    if is_wifi_enabled():
-        current_wifi = get_wifi_status()
-        if current_wifi == '' or current_wifi not in get_trusted_networks():
-            # shutdown wifi
-            #disable_wifi()
-            return False
-            #notification()
-        else:
-            #notification(message='Wifi is connected to trusted network: ' + current_wifi)
-            pass
+def init_cron_job():
+  reload = False
+  if not os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.service'):
+    logger.info('Installing WiFiKilL3r service to location: %s' %(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.service',))
+    shutil.copy2('/usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.service', HOME_FOLDER + '/.local/share/systemd/user/')
+    reload = True
+
+  if not os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.timer'):
+    logger.info('Installing WiFiKilL3r timer to location: %s' %(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.timer',))
+    shutil.copy2('/usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.timer', HOME_FOLDER + '/.local/share/systemd/user/')
+    reload = True
+
+  if reload:
+    logger.info('Reloading systemd daemon')
+    subprocess.check_output('systemctl --user daemon-reload', shell=True)
+
+def is_cron_enabled():
+  init_cron_job()
+  cron_enabled = False
+  if 'systemd' == CRON_TYPE:
+    cron_enabled = os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/user-session.target.wants/WiFiKilL3r.service') and \
+                   os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/timers.target.wants/WiFiKilL3r.timer')
+
+  logger.debug('Cron is %s' % ('enabled' if cron_enabled else 'disabled'))
+  return cron_enabled
+
+def enable_cron_job():
+  init_cron_job()
+  if not is_cron_enabled():
+    logger.debug('Enable running cronjobs')
+    if 'systemd' == CRON_TYPE:
+      subprocess.check_output('systemctl --user enable WiFiKilL3r.service', shell=True)
+      subprocess.check_output('systemctl --user enable WiFiKilL3r.timer', shell=True)
+      subprocess.check_output('systemctl --user start WiFiKilL3r.service', shell=True)
+      subprocess.check_output('systemctl --user start WiFiKilL3r.timer', shell=True)
+
+  return True
+
+def disable_cron_job():
+  init_cron_job()
+  if is_cron_enabled():
+    logger.debug('Disable running cronjobs')
+    if 'systemd' == CRON_TYPE:
+      subprocess.check_output('systemctl --user stop WiFiKilL3r.timer', shell=True)
+      subprocess.check_output('systemctl --user stop WiFiKilL3r.service', shell=True)
+      subprocess.check_output('systemctl --user disable WiFiKilL3r.service', shell=True)
+      subprocess.check_output('systemctl --user disable WiFiKilL3r.timer', shell=True)
+
+  return True
+
+def toggle_cron_job():
+  logger.debug('Toggle Cron Job')
+  if is_cron_enabled():
+    logger.debug('From on to off')
+    disable_cron_job()
+  else:
+    logger.debug('From off to on')
+    enable_cron_job()
+
+def is_running():
+  running = False
+  if is_cron_enabled:
+    lastrun = 0
+    with open(LAST_RUN_FILE) as f:
+      lastrun = int(f.read())
+
+    running = (int(time.time()) - lastrun) < CRON_TIME_OUT_ERROR
+  return running
+
+def last_run():
+  lastrun = 0
+  with open(LAST_RUN_FILE) as f:
+    lastrun = int(f.read())
+
+  logger.debug('Last run: %s' % (lastrun,))
+  return lastrun
+
+def run_check():
+  logger.info('Start cron run')
+  if is_wifi_enabled():
+    current_wifi = get_wifi_status()
+    if current_wifi == '' or current_wifi not in get_trusted_networks():
+      logger.debug('%s WiFi network is not trusted. Shutting down WiFi' % (current_wifi,))
+      # shutdown wifi
+      disable_wifi()
+      notification()
     else:
-        #notification(message='Wifi is not running!! YEAH!')
-        pass
+      logger.debug('%s WiFi network is trusted!!' % (current_wifi,))
+  else:
+    logger.debug('WiFi is already disabled. Nothing to do...')
+    pass
 
-    return True
+  with open(LAST_RUN_FILE,'w') as f:
+    f.write(str(int(time.time())))
+
+  return True
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='WiFiKilL3r options')
-  parser.add_argument('-a','--action', choices=['check_cron', 'enable_cron', 'disable_cron', 'run_cron','gui'], default='gui')
-  args = parser.parse_args()
+  parser.add_argument('-a','--action', choices=['check_cron', 'enable_cron', 'disable_cron', 'run_check','is_running','nothing'], default='nothing')
+  parser.add_argument('-d','--debug', choices=['1','0'], default=0)
 
-  if args.action == 'run_cron':
-    run_cron()
+  args = parser.parse_args()
+  if args.debug == '1':
+    handler.setLevel(logging.DEBUG)
+    logger.setLevel(logging.DEBUG)
+  else:
+    logger.addHandler(logging.NullHandler())
+
+  if 'check_cron' == args.action:
+    is_cron_enabled()
+  elif 'enable_cron' == args.action:
+    enable_cron_job()
+  elif 'disable_cron' == args.action:
+    disable_cron_job()
+  elif 'run_check' == args.action:
+    run_check()
+  elif 'is_running' == args.action:
+    is_running()

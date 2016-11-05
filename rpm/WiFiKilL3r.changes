@@ -8,6 +8,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sat Nov 05 2016 TheYOSH <theyosh@theyosh.nl> 0.3-1
+- Added background daemon for checking (systemd). So the app does not have to be running in order to be protected.
+- Rewritten logic from app to daemon
+- Added logging
+- Added last check timestamp
+
 * Wed Jul 03 2016 TheYOSH <theyosh@theyosh.nl> 0.2-1
 - Added a reconnect button. This will pause the KilL3r for 20 seconds and enabled WiFi to reconnect to known networks with 1 press
 - Better visual feedback for WiFi and KilL3r status buttons

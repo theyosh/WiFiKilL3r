@@ -1,0 +1,8 @@
+[Unit]
+Description=WiFiKilL3r Cronjob timer
+
+[Timer]
+OnUnitActiveSec=60s
+
+[Install]
+WantedBy=timers.target

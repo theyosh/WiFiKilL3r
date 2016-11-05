@@ -30,7 +30,7 @@
 
 import MeeGo.Connman 0.2
 import io.thp.pyotherside 1.4
-import org.nemomobile.notifications 1.0
+//import org.nemomobile.notifications 1.0
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "pages"
@@ -40,19 +40,13 @@ ApplicationWindow
     id: wifiKillerApp
 
     property variant last_update: 0
-    property bool killerrunning: false
+    property bool cronenabled: false
     property bool wifienabled: false
     property int reconnecting: 0
-    property string version: '0.2'
+    property string version: '0.3'
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
-
-    function notificationMessage(title,message) {
-        notification.summary = title;
-        notification.body = message;
-        notification.publish();
-    }
 
     function is_trusted_network(name) {
         return pythonBridge.is_trusted_network(name)
@@ -65,9 +59,12 @@ ApplicationWindow
     function reconnect() {
         if (wifiKillerApp.reconnecting != 1) {
             wifiKillerApp.reconnecting = 1
-            wifiKillerApp.killerrunning = false
             wifiDevice.setPowered(true)
         }
+    }
+
+    function togglecron() {
+        pythonBridge.toggle_cron();
     }
 
     Python {
@@ -76,6 +73,8 @@ ApplicationWindow
         Component.onCompleted: {
             addImportPath(Qt.resolvedUrl('python'));
             importModule('WiFiKilL3r', function () {});
+            is_cron_enabled();
+            last_run();
         }
 
         onError: {
@@ -89,9 +88,21 @@ ApplicationWindow
             console.log('got message from python: ' + data);
         }
 
-        function cron_enabled() {
+        function is_cron_enabled() {
             call('WiFiKilL3r.is_cron_enabled', [], function(enabled) {
-                killerData.cronenabled = enabled;
+                wifiKillerApp.cronenabled = enabled;
+            });
+        }
+
+        function last_run() {
+            call('WiFiKilL3r.last_run', [], function(time) {
+                wifiKillerApp.last_update = new Date(time * 1000);
+            });
+        }
+
+        function toggle_cron() {
+            call('WiFiKilL3r.toggle_cron_job', [], function() {
+                is_cron_enabled();
             });
         }
 
@@ -101,18 +112,6 @@ ApplicationWindow
 
         function save_trusted_network(name,save) {
             call_sync('WiFiKilL3r.save_trusted_network',[name,save]);
-        }
-
-        function check_wifi() {
-            wifiKillerApp.wifienabled = call_sync('WiFiKilL3r.run_cron',[]);
-            if (wifienabled !== wifiDevice.powered) {
-                wifiDevice.setPowered(wifiKillerApp.wifienabled);
-                if (!wifiKillerApp.wifienabled) {
-                    notificationMessage('WifiKilL3r status:','Wifi is disabled due to leaving trusted networks!')
-                    wifiKillerApp.reconnecting = 0
-                }
-            }
-            wifiKillerApp.last_update = new Date()
         }
     }
 
@@ -134,24 +133,16 @@ ApplicationWindow
         }
     }
 
-    Notification {
-        id: notification
-        category: "x-nemo.simple.notifications"
-        appName: "WifiKilL3r"
-        appIcon: "/usr/share/WiFiKilL3r/qml/images/WiFiKilL3r.png"
-        summary: "Notification summary"
-        body: "Notification body"
-        previewSummary: notification.summary
-        previewBody: notification.body
-    }
-
     Timer {
         id: updateTimer
         interval: 60000
-        running: wifiKillerApp.killerrunning && wifienabled
+        running: true
         repeat: true
         triggeredOnStart: true
-        onTriggered: pythonBridge.check_wifi()
+        onTriggered: {
+            pythonBridge.is_cron_enabled()
+            pythonBridge.last_run()
+        }
     }
 
     Timer {

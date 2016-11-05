@@ -40,12 +40,12 @@ Page {
         // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
         PullDownMenu {
             MenuItem {
-                text: qsTr("About")
+                text: qsTr("About WiFiKilL3r")
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
             MenuItem {
-                text: qsTr("Update trusted networks")
-                onClicked: pageStack.push(Qt.resolvedUrl("AddNew.qml"))
+                text: qsTr("Manage trusted networks")
+                onClicked: pageStack.push(Qt.resolvedUrl("NetworksPage.qml"))
             }
         }
 
@@ -96,14 +96,14 @@ Page {
             TextSwitch {
                 id: killerrunning
                 automaticCheck: false
-                text: qsTr("KilL3r") + " " + (wifiKillerApp.killerrunning ? qsTr("enabled") :qsTr("disabled"))
-                checked: wifiKillerApp.killerrunning
+                text: qsTr("KilL3r") + " " + (checked ? qsTr("enabled") :qsTr("disabled"))
+                checked: wifiKillerApp.cronenabled
                 description: qsTr("Current KilL3r status")
                 onClicked: {
-                    wifiKillerApp.killerrunning = !wifiKillerApp.killerrunning
+                    wifiKillerApp.togglecron()
                 }
             }
-
+/*
             TextSwitch {
                 id: reconnect
                 automaticCheck: false
@@ -115,13 +115,13 @@ Page {
                     wifiKillerApp.reconnect()
                 }
             }
-
+*/
             TextField {
                 id: lastUpdateField
                 x: Theme.paddingLarge
                 placeholderText: qsTr('Loading...')
-                text: wifiKillerApp.last_update === 0 ? qsTr('Loading...') : Qt.formatDateTime(wifiKillerApp.last_update,'dddd dd-MMM-yyyy hh:mm:ss')
-                label: qsTr('Last update')
+                text: "\n\n" + wifiKillerApp.last_update === 0 ? qsTr('Loading...') : Qt.formatDateTime(wifiKillerApp.last_update,'dddd dd-MMM-yyyy hh:mm:ss')
+                label: qsTr('Last check')
                 readOnly: true
                 labelVisible: true
                 width: parent.width

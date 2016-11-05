@@ -49,7 +49,7 @@ CoverBackground {
         id: version
         anchors.centerIn: parent
         font.pixelSize: Theme.fontSizeSmall
-        text: "\n\n\n\n" + qsTr("version") + " " + wifiKillerApp.version
+        text: "\n\n\n\nLast check\n" + (wifiKillerApp.last_update === 0 ? qsTr('Loading...') : Qt.formatDateTime(wifiKillerApp.last_update,'d-M-yy hh:mm:ss'))
     }
 
     CoverPlaceholder {
@@ -61,11 +61,11 @@ CoverBackground {
         id: coverAction
         CoverAction {
             iconSource: "image://theme/icon-cover-sync"
-            onTriggered: wifiKillerApp.reconnect()
+            onTriggered: wifiDevice.setPowered(true)
         }
         CoverAction {
-            iconSource: "image://theme/icon-cover-" + (wifiKillerApp.killerrunning ? 'pause' : 'play')
-            onTriggered: wifiKillerApp.killerrunning = !wifiKillerApp.killerrunning
+            iconSource: "image://theme/icon-cover-" + (wifiKillerApp.cronenabled ? 'pause' : 'play')
+            onTriggered: wifiKillerApp.togglecron()
         }
     }
 }

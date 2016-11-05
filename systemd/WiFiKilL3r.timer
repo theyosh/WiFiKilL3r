@@ -1,7 +1,0 @@
-[Unit]
-Description=WiFiKilL3r script
-
-[Service]
-Type=oneshot
-RemainAfterExit=no
-ExecStart=python /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r.py -a run_cron

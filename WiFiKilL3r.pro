@@ -41,7 +41,10 @@ DISTFILES += \
     qml/pages/AboutPage.qml \
     qml/images/WiFiKilL3r.png \
     qml/python/WiFiKilL3r.py \
-    qml/pages/AddNew.qml \
     systemd/WiFiKilL3r.service \
     systemd/WiFiKilL3r.timer \
-    rpm/WiFiKilL3r.changes
+    rpm/WiFiKilL3r.changes \
+    qml/python/WiFiKilL3r_Cron.sh \
+    qml/python/systemd/WiFiKilL3r.service \
+    qml/python/systemd/WiFiKilL3r.timer \
+    qml/pages/NetworksPage.qml

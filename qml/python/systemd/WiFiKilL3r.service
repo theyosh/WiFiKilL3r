@@ -1,0 +1,10 @@
+[Unit]
+Description=WiFiKilL3r
+After=ofono.service lipstick.service
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r_Cron.sh
+
+[Install]
+WantedBy=user-session.target
