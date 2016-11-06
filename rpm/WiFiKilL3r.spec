@@ -14,7 +14,7 @@ Name:       WiFiKilL3r
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    WiFiKilL3r
 Version:    0.3
-Release:    1
+Release:    2
 Group:      Qt/Qt
 License:    LICENSE
 URL:        https://theyosh.nl

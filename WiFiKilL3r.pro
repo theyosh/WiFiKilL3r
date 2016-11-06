@@ -34,7 +34,8 @@ CONFIG += sailfishapp_i18n
 # planning to localize your app, remember to comment out the
 # following TRANSLATIONS line. And also do not forget to
 # modify the localized app name in the the .desktop file.
-TRANSLATIONS += translations/WiFiKilL3r-nl.ts
+TRANSLATIONS += translations/WiFiKilL3r-nl.ts \
+    translations/WiFiKilL3r-sv.ts
 
 DISTFILES += \
     qml/pages/MainPage.qml \

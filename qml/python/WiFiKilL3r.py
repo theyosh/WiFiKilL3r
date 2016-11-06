@@ -21,6 +21,9 @@ DBUS_WIFI = 'dbus-send --system --print-reply --dest=net.connman /net/connman/te
 CRON_TYPE = 'systemd'
 CRON_TIME_OUT_ERROR = 10 * 60
 
+if not os.path.isdir(WIFIKILLER_FOLDER):
+  os.mkdir(WIFIKILLER_FOLDER)
+
 logging.basicConfig(
   level=logging.INFO,
   format= '[%(asctime)s] %(levelname)s - %(message)s',
@@ -145,7 +148,7 @@ def is_cron_enabled():
 def enable_cron_job():
   init_cron_job()
   if not is_cron_enabled():
-    logger.debug('Enable running cronjobs')
+    logger.info('Enable WiFiKilL3r cronjobs')
     if 'systemd' == CRON_TYPE:
       subprocess.check_output('systemctl --user enable WiFiKilL3r.service', shell=True)
       subprocess.check_output('systemctl --user enable WiFiKilL3r.timer', shell=True)
@@ -157,7 +160,7 @@ def enable_cron_job():
 def disable_cron_job():
   init_cron_job()
   if is_cron_enabled():
-    logger.debug('Disable running cronjobs')
+    logger.info('Disable WiFiKilL3r cronjobs')
     if 'systemd' == CRON_TYPE:
       subprocess.check_output('systemctl --user stop WiFiKilL3r.timer', shell=True)
       subprocess.check_output('systemctl --user stop WiFiKilL3r.service', shell=True)
@@ -179,16 +182,22 @@ def is_running():
   running = False
   if is_cron_enabled:
     lastrun = 0
-    with open(LAST_RUN_FILE) as f:
-      lastrun = int(f.read())
+    try:
+      with open(LAST_RUN_FILE) as f:
+        lastrun = int(f.read())
+    except Exception as er:
+      pass
 
     running = (int(time.time()) - lastrun) < CRON_TIME_OUT_ERROR
   return running
 
 def last_run():
   lastrun = 0
-  with open(LAST_RUN_FILE) as f:
-    lastrun = int(f.read())
+  try:
+    with open(LAST_RUN_FILE) as f:
+      lastrun = int(f.read())
+  except Exception as er:
+    pass
 
   logger.debug('Last run: %s' % (lastrun,))
   return lastrun
@@ -208,8 +217,11 @@ def run_check():
     logger.debug('WiFi is already disabled. Nothing to do...')
     pass
 
-  with open(LAST_RUN_FILE,'w') as f:
-    f.write(str(int(time.time())))
+  try:
+    with open(LAST_RUN_FILE,'w') as f:
+      f.write(str(int(time.time())))
+  except Exception as er:
+    pass
 
   return True
 

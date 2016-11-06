@@ -8,6 +8,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Nov 06 2016 TheYOSH <theyosh@theyosh.nl> 0.3-2
+- Fix initial startup. Issue: https://github.com/theyosh/WiFiKilL3r/issues/2
+- Added Swedish language thanks to Åke Engelbrektson
+
 * Sat Nov 05 2016 TheYOSH <theyosh@theyosh.nl> 0.3-1
 - Added background daemon for checking (systemd). So the app does not have to be running in order to be protected.
 - Rewritten logic from app to daemon
