@@ -40,6 +40,10 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Last check</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainPage</name>

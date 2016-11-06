@@ -54,6 +54,10 @@ WiFiKilL3r har skapats av TheYOSH https://theyosh.nl
         <source>Loading...</source>
         <translation>Läser in ...</translation>
     </message>
+    <message>
+        <source>Last check</source>
+        <translation>Senaste kontroll</translation>
+    </message>
 </context>
 <context>
     <name>MainPage</name>

@@ -14,7 +14,7 @@ Name:       WiFiKilL3r
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    WiFiKilL3r
 Version:    0.3
-Release:    2
+Release:    4
 Group:      Qt/Qt
 License:    LICENSE
 URL:        https://theyosh.nl
@@ -22,6 +22,7 @@ Source0:    %{name}-%{version}.tar.bz2
 Source100:  WiFiKilL3r.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   pyotherside-qml-plugin-python3-qt5
+Requires:   dbus-python3
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)

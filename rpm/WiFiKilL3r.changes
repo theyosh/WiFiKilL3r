@@ -8,6 +8,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Nov 06 2016 TheYOSH <theyosh@theyosh.nl> 0.3-4
+- Added translation to cover page
+
+* Sun Nov 06 2016 TheYOSH <theyosh@theyosh.nl> 0.3-3
+- Added Python DBUS dependency
+
 * Sun Nov 06 2016 TheYOSH <theyosh@theyosh.nl> 0.3-2
 - Fix initial startup. Issue: https://github.com/theyosh/WiFiKilL3r/issues/2
 - Added Swedish language thanks to Åke Engelbrektson

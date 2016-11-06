@@ -42,14 +42,14 @@ CoverBackground {
         }
         width: parent.width
         horizontalAlignment: Text.AlignHCenter
-        text: "\n" + qsTr("WiFiKilL3r")
+        text: "\n" + qsTr('WiFiKilL3r')
     }
 
     Label {
         id: version
         anchors.centerIn: parent
         font.pixelSize: Theme.fontSizeSmall
-        text: "\n\n\n\nLast check\n" + (wifiKillerApp.last_update === 0 ? qsTr('Loading...') : Qt.formatDateTime(wifiKillerApp.last_update,'d-M-yy hh:mm:ss'))
+        text: "\n\n\n\n" + qsTr('Last check') + "\n" + (wifiKillerApp.last_update === 0 ? qsTr('Loading...') : Qt.formatDateTime(wifiKillerApp.last_update,'d-M-yy hh:mm:ss'))
     }
 
     CoverPlaceholder {
