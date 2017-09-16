@@ -61,7 +61,7 @@ CoverBackground {
         id: coverAction
         CoverAction {
             iconSource: "image://theme/icon-cover-sync"
-            onTriggered: wifiDevice.setPowered(true)
+            onTriggered: wifiKillerApp.enable_wifi()
         }
         CoverAction {
             iconSource: "image://theme/icon-cover-" + (wifiKillerApp.cronenabled ? 'pause' : 'play')

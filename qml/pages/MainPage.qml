@@ -89,33 +89,22 @@ Page {
                 text: qsTr("WiFi") + " " + (checked ? qsTr("enabled") :qsTr("disabled"))
                 description: qsTr("Current WiFi status")
                 onClicked: {
-                    wifiDevice.setPowered(!wifiKillerApp.wifienabled)
+                    //wifiDevice.setPowered(!wifiKillerApp.wifienabled)
+                    wifiKillerApp.togglewifi()
                 }
             }
 
             TextSwitch {
                 id: killerrunning
                 automaticCheck: false
-                text: qsTr("KilL3r") + " " + (checked ? qsTr("enabled") :qsTr("disabled"))
                 checked: wifiKillerApp.cronenabled
+                text: qsTr("KilL3r") + " " + (checked ? qsTr("enabled") :qsTr("disabled"))
                 description: qsTr("Current KilL3r status")
                 onClicked: {
                     wifiKillerApp.togglecron()
                 }
             }
-/*
-            TextSwitch {
-                id: reconnect
-                automaticCheck: false
-                checked: false
-                busy: wifiKillerApp.reconnecting == 1
-                text: qsTr("Reconnect WiFi")
-                description: wifiKillerApp.reconnecting == 0 ? qsTr("Reconnect") : wifiKillerApp.reconnecting == 1 ? qsTr("Reconnecting...") : qsTr("Reconnected")
-                onClicked: {
-                    wifiKillerApp.reconnect()
-                }
-            }
-*/
+
             TextField {
                 id: lastUpdateField
                 x: Theme.paddingLarge

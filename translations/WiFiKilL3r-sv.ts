@@ -26,8 +26,8 @@ On the coverpage you have the option to reconnect your WiFi, and enable/disable 
 This app is created in order to protect your mobile device from being tracked by wifitrackers in citymalls and other public locations. The idea is that when you leave your trusted networks, there is no need to keep WiFi running. So this app will shutdown the WiFi device for you. This way it will save battery power, but more important, you can&apos;t be tracked!
 
 WiFiKilL3r app is created by TheYOSH https://theyosh.nl
-(c) 2016</source>
-        <translation>Den här appen övervakar din enhets WiFi-status och stänger av det när telefonen inte längre är ansluten till ett betrott nätverk. Den visar också en avisering, när WiFi stängs av.
+(c) 2016-2017</source>
+        <translation type="unfinished">Den här appen övervakar din enhets WiFi-status och stänger av det när telefonen inte längre är ansluten till ett betrott nätverk. Den visar också en avisering, när WiFi stängs av.
 
 - Du kan aktivera eller avaktivera WiFi genom att trycka på WiFi-indikatorn
 - Du kan aktivera eller avaktivera WiFi KilL3r-tjänsten genom att trycka på KilL3r-indikatorn
@@ -41,7 +41,7 @@ På programminiatyren har du alternativen att återansluta WiFi och att aktivera
 Appen har skapats för att skydda din mobila enhet från att bli spårad av WiFi-spårare, i köpcenter och andra offentliga miljöer. Idéen är att när du lämnar ditt betrodda nätverk, har du inte längre något behov av en aktiv WiFi-uppkoppling. Därför stänger den här appen av WiFi-modulen för dig. Det kommer att spara batterikraft, men kanske viktigare... du kan inte spåras via WiFi.
 
 WiFiKilL3r har skapats av TheYOSH https://theyosh.nl
-(c) 2016</translation>
+(c) 2016-2017 {3r?} {3r?} {3r?}</translation>
     </message>
 </context>
 <context>

@@ -48,4 +48,6 @@ DISTFILES += \
     qml/python/WiFiKilL3r_Cron.sh \
     qml/python/systemd/WiFiKilL3r.service \
     qml/python/systemd/WiFiKilL3r.timer \
-    qml/pages/NetworksPage.qml
+    qml/pages/NetworksPage.qml \
+    qml/bin/start-wifi-root \
+    qml/bin/stop-wifi-root

@@ -30,7 +30,6 @@
 
 import MeeGo.Connman 0.2
 import io.thp.pyotherside 1.4
-//import org.nemomobile.notifications 1.0
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "pages"
@@ -42,8 +41,7 @@ ApplicationWindow
     property variant last_update: 0
     property bool cronenabled: false
     property bool wifienabled: false
-    property int reconnecting: 0
-    property string version: '0.3'
+    property string version: '0.4'
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
@@ -54,6 +52,22 @@ ApplicationWindow
 
     function save_trusted_network(name,save) {
         pythonBridge.save_trusted_network(name,save)
+    }
+
+    function disable_wifi() {
+        pythonBridge.disable_wifi()
+    }
+
+    function enable_wifi() {
+        pythonBridge.enable_wifi()
+    }
+
+    function togglewifi() {
+        if (wifiKillerApp.wifienabled) {
+            disable_wifi();
+        } else {
+            enable_wifi();
+        }
     }
 
     function reconnect() {
@@ -107,11 +121,31 @@ ApplicationWindow
         }
 
         function is_trusted_network(name) {
-            return call_sync('WiFiKilL3r.is_trusted_network',[name]);
+            //console.log('is_trusted_network: ' + name);
+            // Bug: https://together.jolla.com/question/156736/2109-pyotherside-call_sync-broken/
+            //return call_sync('WiFiKilL3r.is_trusted_network',[name]);
+            return evaluate('WiFiKilL3r.is_trusted_network("' + name+ '")')
         }
 
         function save_trusted_network(name,save) {
-            call_sync('WiFiKilL3r.save_trusted_network',[name,save]);
+            //console.log('save_trusted_network: ' + name + ' ' + save);
+            //call_sync('WiFiKilL3r.save_trusted_network',[name,save]);
+
+            call('WiFiKilL3r.save_trusted_network', [name,save], function() {
+                //console.log('Saved wifi ' + name);
+            });
+        }
+
+        function disable_wifi() {
+            call('WiFiKilL3r.disable_wifi', [], function() {
+                console.log('Disabled wifi');
+            });
+        }
+
+        function enable_wifi() {
+            call('WiFiKilL3r.enable_wifi', [], function() {
+                console.log('Enabled wifi');
+            });
         }
     }
 
@@ -126,10 +160,12 @@ ApplicationWindow
 
         onTechnologiesChanged: {
             wifiKillerApp.wifienabled = wifiDevice.powered
+            //console.log('Wifi status changed: ' + (wifiKillerApp.wifienabled ? 'eanbled' : 'disabled'))
         }
 
         onPoweredChanged: {
             wifiKillerApp.wifienabled = wifiDevice.powered
+            //console.log('Wifi power changed: ' + (wifiKillerApp.wifienabled ? 'eanbled' : 'disabled'))
         }
     }
 
@@ -142,18 +178,6 @@ ApplicationWindow
         onTriggered: {
             pythonBridge.is_cron_enabled()
             pythonBridge.last_run()
-        }
-    }
-
-    Timer {
-        id: reconnectTimer
-        interval: 20000
-        running: wifiKillerApp.reconnecting == 1
-        repeat: false
-        triggeredOnStart: false
-        onTriggered: {
-            wifiKillerApp.reconnecting = 2
-            wifiKillerApp.killerrunning = true
         }
     }
 }

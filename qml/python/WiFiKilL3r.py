@@ -12,6 +12,7 @@ import time
 
 DEBUG = False
 
+APP_DIR = '/usr/share/WiFiKilL3r'
 HOME_FOLDER = os.path.expanduser('~')
 WIFIKILLER_FOLDER = HOME_FOLDER + '/.WiFiKilL3r'
 TRUSTED_NETWORKS = WIFIKILLER_FOLDER + '/valid_networks'
@@ -25,19 +26,19 @@ if not os.path.isdir(WIFIKILLER_FOLDER):
   os.mkdir(WIFIKILLER_FOLDER)
 
 logging.basicConfig(
-  level=logging.INFO,
-  format= '[%(asctime)s] %(levelname)s - %(message)s',
-  datefmt='%d-%m-%Y %H:%M:%S'
+  level=logging.INFO
 )
 
 logger = logging.getLogger('WiFiKilL3r')
 formatter = logging.Formatter('[%(asctime)s] %(levelname)s - %(message)s', datefmt="%d-%m-%Y %H:%M:%S")
 handler = logging.handlers.TimedRotatingFileHandler(LOG_FILE, when='midnight',interval=1, backupCount=30)
-handler.setFormatter(formatter)
-logger.addHandler(handler)
 
 if DEBUG:
   logger.setLevel(logging.DEBUG)
+  formatter = logging.Formatter('[%(asctime)s] %(levelname)s - [%(filename)s:%(lineno)s - %(funcName)15s() ] - %(message)s', datefmt="%d-%m-%Y %H:%M:%S")
+
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 def notification(title = 'WifiKilL3r status',message = 'Wifi is disabled due to leaving trusted networks!'):
   bus = dbus.SessionBus()
@@ -45,7 +46,7 @@ def notification(title = 'WifiKilL3r status',message = 'Wifi is disabled due to 
   wifikiller = dbus.Interface(object,'org.freedesktop.Notifications')
   wifikiller.Notify('WiFiKilL3r',
                      0,
-                     '/usr/share/WiFiKilL3r/qml/images/WiFiKilL3r.png',
+                     APP_DIR + '/qml/images/WiFiKilL3r.png',
                      title,
                      message,
                      dbus.Array(['default', '']),
@@ -77,12 +78,14 @@ def save_trusted_network(name,save):
 
   trusted_networks = get_trusted_networks()
   if save and name not in trusted_networks:
+    logger.info('Add network ' + name)
     trusted_networks.append(name)
 
   try:
     with open(TRUSTED_NETWORKS,'w+') as f:
       for trusted_network in trusted_networks:
         if not save and name == trusted_network:
+          logger.info('Deleted network ' + name)
           continue
 
         f.write(trusted_network + "\n")
@@ -90,6 +93,7 @@ def save_trusted_network(name,save):
     pass
 
 def get_wifi_status():
+  current_wifi = ''
   try:
     current_wifi =  str(subprocess.check_output('/usr/sbin/iw dev wlan0 link', shell=True).strip())
     regex = re.compile(r'Connected to (?P<mac>[^ ]+).*SSID: (?P<ssid>[^\\n]+)')
@@ -103,32 +107,39 @@ def get_wifi_status():
   return current_wifi
 
 def is_wifi_enabled():
-  data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.GetProperties', shell=True).strip())
-  p = re.compile(r'string "Powered"\n\s+variant\s+boolean true')
-  re.search(p, data)
-  logger.debug('Wifi is %s' % ('enabled' if data else 'disabled',))
-  return True if data is not None else False
+  enabled = False
+  try:
+    wifi_enabled = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.GetProperties', shell=True).strip())
+    regex = re.compile(r'string "Powered"\\n\s+variant\s+boolean true')
+    enabled = re.search(regex, wifi_enabled) is not None
+  except:
+    enabled = False
+
+  logger.debug('Wifi is %s' % ('enabled' if enabled else 'disabled',))
+  return enabled
 
 def disable_wifi():
   if is_wifi_enabled():
     logger.debug('Disable wifi')
-    data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:false', shell=True))
+    #data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:false', shell=True))
+    data = str(subprocess.check_output(APP_DIR + '/qml/bin/stop-wifi-root', shell=True))
 
 def enable_wifi():
   if not is_wifi_enabled():
     logger.debug('Enable wifi')
-    data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:true', shell=True))
+    #data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:true', shell=True))
+    data = str(subprocess.check_output(APP_DIR + '/qml/bin/start-wifi-root', shell=True))
 
 def init_cron_job():
   reload = False
   if not os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.service'):
     logger.info('Installing WiFiKilL3r service to location: %s' %(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.service',))
-    shutil.copy2('/usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.service', HOME_FOLDER + '/.local/share/systemd/user/')
+    shutil.copy2(APP_DIR + '/qml/python/systemd/WiFiKilL3r.service', HOME_FOLDER + '/.local/share/systemd/user/')
     reload = True
 
   if not os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.timer'):
     logger.info('Installing WiFiKilL3r timer to location: %s' %(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.timer',))
-    shutil.copy2('/usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.timer', HOME_FOLDER + '/.local/share/systemd/user/')
+    shutil.copy2(APP_DIR + '/qml/python/systemd/WiFiKilL3r.timer', HOME_FOLDER + '/.local/share/systemd/user/')
     reload = True
 
   if reload:
@@ -180,7 +191,7 @@ def toggle_cron_job():
 
 def is_running():
   running = False
-  if is_cron_enabled:
+  if is_cron_enabled():
     lastrun = 0
     try:
       with open(LAST_RUN_FILE) as f:
