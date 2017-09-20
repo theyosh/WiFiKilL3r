@@ -1,6 +1,6 @@
 Name: WiFiKilL3r
 Summary: WiFiKilL3r
-Version: 0.4
+Version: 0.5
 Release: 1
 # The contents of the Group field should be one of the groups listed here:
 # http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
@@ -47,8 +47,7 @@ Files:
 # build system, please see https://wiki.merproject.org/wiki/Spectacle
 
 # %post
-# # Give root rights to wifi scripts... :(
-# chmod 4755 /usr/share/WiFiKilL3r/qml/bin/stop-wifi-root
-# chmod 4755 /usr/share/WiFiKilL3r/qml/bin/start-wifi-root
+# Give root rights to wifi scripts... :(
+# chmod 4755 /usr/share/WiFiKilL3r/qml/bin/*-wifi-root_*
 # chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r_Cron.sh
 # chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r.py

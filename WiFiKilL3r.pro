@@ -49,5 +49,7 @@ DISTFILES += \
     qml/python/systemd/WiFiKilL3r.service \
     qml/python/systemd/WiFiKilL3r.timer \
     qml/pages/NetworksPage.qml \
-    qml/bin/start-wifi-root \
-    qml/bin/stop-wifi-root
+    qml/bin/start-wifi-root_arm \
+    qml/bin/stop-wifi-root_arm \
+    qml/bin/start-wifi-root_intel \
+    qml/bin/stop-wifi-root_intel

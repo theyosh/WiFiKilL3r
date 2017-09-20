@@ -9,6 +9,7 @@ import shutil
 import logging
 import logging.handlers
 import time
+import platform
 
 DEBUG = False
 
@@ -21,6 +22,7 @@ LAST_RUN_FILE = WIFIKILLER_FOLDER + '/last_run'
 DBUS_WIFI = 'dbus-send --system --print-reply --dest=net.connman /net/connman/technology/wifi'
 CRON_TYPE = 'systemd'
 CRON_TIME_OUT_ERROR = 10 * 60
+ARM_DEVICE = 'arm' in platform.processor()
 
 if not os.path.isdir(WIFIKILLER_FOLDER):
   os.mkdir(WIFIKILLER_FOLDER)
@@ -122,13 +124,13 @@ def disable_wifi():
   if is_wifi_enabled():
     logger.debug('Disable wifi')
     #data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:false', shell=True))
-    data = str(subprocess.check_output(APP_DIR + '/qml/bin/stop-wifi-root', shell=True))
+    data = str(subprocess.check_output(APP_DIR + '/qml/bin/stop-wifi-root' + ('_arm' if ARM_DEVICE else '_intel'), shell=True))
 
 def enable_wifi():
   if not is_wifi_enabled():
     logger.debug('Enable wifi')
     #data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:true', shell=True))
-    data = str(subprocess.check_output(APP_DIR + '/qml/bin/start-wifi-root', shell=True))
+    data = str(subprocess.check_output(APP_DIR + '/qml/bin/start-wifi-root' + ('_arm' if ARM_DEVICE else '_intel'), shell=True))
 
 def init_cron_job():
   reload = False

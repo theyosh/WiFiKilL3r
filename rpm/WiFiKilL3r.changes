@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Wed Sep 20 2017 TheYOSH <theyosh@theyosh.nl> 0.5-1
+- Added i486 support
+
 * Sat Sep 16 2017 TheYOSH <theyosh@theyosh.nl> 0.4-1
 - Borrowed code from Schturman for toggeling Wifi with setuid. Thanks :)
 - Rewritten some parts to tackle the PyOtherside bugs: https://together.jolla.com/question/156736/2109-pyotherside-call_sync-broken/
