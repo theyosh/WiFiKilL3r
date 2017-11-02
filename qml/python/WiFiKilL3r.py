@@ -123,37 +123,25 @@ def is_wifi_enabled():
 def disable_wifi():
   if is_wifi_enabled():
     logger.debug('Disable wifi')
-    #data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:false', shell=True))
     data = str(subprocess.check_output(APP_DIR + '/qml/bin/stop-wifi-root' + ('_arm' if ARM_DEVICE else '_intel'), shell=True))
 
 def enable_wifi():
   if not is_wifi_enabled():
     logger.debug('Enable wifi')
-    #data = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.SetProperty string:"Powered" variant:boolean:true', shell=True))
     data = str(subprocess.check_output(APP_DIR + '/qml/bin/start-wifi-root' + ('_arm' if ARM_DEVICE else '_intel'), shell=True))
 
 def init_cron_job():
-  reload = False
-  if not os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.service'):
-    logger.info('Installing WiFiKilL3r service to location: %s' %(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.service',))
-    shutil.copy2(APP_DIR + '/qml/python/systemd/WiFiKilL3r.service', HOME_FOLDER + '/.local/share/systemd/user/')
-    reload = True
-
-  if not os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.timer'):
-    logger.info('Installing WiFiKilL3r timer to location: %s' %(HOME_FOLDER + '/.local/share/systemd/user/WiFiKilL3r.timer',))
-    shutil.copy2(APP_DIR + '/qml/python/systemd/WiFiKilL3r.timer', HOME_FOLDER + '/.local/share/systemd/user/')
-    reload = True
-
-  if reload:
-    logger.info('Reloading systemd daemon')
-    subprocess.check_output('systemctl --user daemon-reload', shell=True)
+  # Dirty hack.... :(
+  logger.info('Reloading systemd daemon')
+  subprocess.check_output('systemctl --user daemon-reload', shell=True)
+  return True
 
 def is_cron_enabled():
   init_cron_job()
   cron_enabled = False
   if 'systemd' == CRON_TYPE:
-    cron_enabled = os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/user-session.target.wants/WiFiKilL3r.service') and \
-                   os.path.isfile(HOME_FOLDER + '/.local/share/systemd/user/timers.target.wants/WiFiKilL3r.timer')
+    cron_enabled = os.path.isfile(HOME_FOLDER + '/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer') and \
+                   os.path.isfile(HOME_FOLDER + '/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service')
 
   logger.debug('Cron is %s' % ('enabled' if cron_enabled else 'disabled'))
   return cron_enabled

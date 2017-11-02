@@ -41,7 +41,7 @@ ApplicationWindow
     property variant last_update: 0
     property bool cronenabled: false
     property bool wifienabled: false
-    property string version: '0.5'
+    property string version: '0.6-1'
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")

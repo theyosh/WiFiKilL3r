@@ -13,7 +13,7 @@ Name:       WiFiKilL3r
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    WiFiKilL3r
-Version:    0.5
+Version:    0.6
 Release:    1
 Group:      Qt/Qt
 License:    LICENSE
@@ -64,6 +64,8 @@ rm -rf %{buildroot}
 chmod 4755 /usr/share/WiFiKilL3r/qml/bin/*-wifi-root_*
 chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r_Cron.sh
 chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r.py
+rm /home/nemo/.local/share/systemd/user/WiFiKilL3r.* 2> /dev/null || true
+cp -u /usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.* /usr/lib/systemd/user/ 2> /dev/null || true
 
 desktop-file-install --delete-original       \
   --dir %{buildroot}%{_datadir}/applications             \

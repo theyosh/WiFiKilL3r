@@ -8,6 +8,15 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Thu Nov 02 2017 TheYOSH <theyosh@theyosh.nl> 0.6-1
+- Code cleanup and finale tests systemd files
+
+* Thu Nov 02 2017 TheYOSH <theyosh@theyosh.nl> 0.5-3
+- Changed systemd services installation files again
+
+* Wed Sep 22 2017 TheYOSH <theyosh@theyosh.nl> 0.5-2
+- Changed systemd services installation files
+
 * Wed Sep 20 2017 TheYOSH <theyosh@theyosh.nl> 0.5-1
 - Added i486 support
 
