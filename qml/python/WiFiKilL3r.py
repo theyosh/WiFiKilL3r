@@ -22,7 +22,7 @@ LAST_RUN_FILE = WIFIKILLER_FOLDER + '/last_run'
 DBUS_WIFI = 'dbus-send --system --print-reply --dest=net.connman /net/connman/technology/wifi'
 CRON_TYPE = 'systemd'
 CRON_TIME_OUT_ERROR = 10 * 60
-ARM_DEVICE = 'arm' in platform.processor()
+ARM_DEVICE = 'arm' in platform.processor() or 'aarch64' in platform.processor()
 
 if not os.path.isdir(WIFIKILLER_FOLDER):
   os.mkdir(WIFIKILLER_FOLDER)
@@ -95,6 +95,7 @@ def save_trusted_network(name,save):
     pass
 
 def get_wifi_status():
+  logger.debug('Getting current WiFi statuss')
   current_wifi = ''
   try:
     current_wifi =  str(subprocess.check_output('/usr/sbin/iw dev wlan0 link', shell=True).strip())
@@ -102,7 +103,8 @@ def get_wifi_status():
     data = re.search(regex, current_wifi)
     if data is not None:
       current_wifi = data.group('ssid') + '(' + data.group('mac') + ')'
-  except:
+  except Exception as ex:
+    logger.debug(ex)
     current_wifi = ''
 
   logger.debug('Connected to WiFi network: %s' % (current_wifi,))
@@ -118,6 +120,18 @@ def is_wifi_enabled():
     enabled = False
 
   logger.debug('Wifi is %s' % ('enabled' if enabled else 'disabled',))
+  return enabled
+
+def runnning_hotspot():
+  enabled = False
+  try:
+    wifi_enabled = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.GetProperties', shell=True).strip())
+    regex = re.compile(r'string "Tethering"\\n\s+variant\s+boolean true')
+    enabled = re.search(regex, wifi_enabled) is not None
+  except:
+    enabled = False
+
+  logger.debug('Hotspot is %s' % ('enabled' if enabled else 'disabled',))
   return enabled
 
 def disable_wifi():
@@ -137,7 +151,6 @@ def init_cron_job():
   return True
 
 def is_cron_enabled():
-  init_cron_job()
   cron_enabled = False
   if 'systemd' == CRON_TYPE:
     cron_enabled = os.path.isfile(HOME_FOLDER + '/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer') and \
@@ -147,31 +160,28 @@ def is_cron_enabled():
   return cron_enabled
 
 def enable_cron_job():
-  init_cron_job()
-  if not is_cron_enabled():
-    logger.info('Enable WiFiKilL3r cronjobs')
-    if 'systemd' == CRON_TYPE:
-      subprocess.check_output('systemctl --user enable WiFiKilL3r.service', shell=True)
-      subprocess.check_output('systemctl --user enable WiFiKilL3r.timer', shell=True)
-      subprocess.check_output('systemctl --user start WiFiKilL3r.service', shell=True)
-      subprocess.check_output('systemctl --user start WiFiKilL3r.timer', shell=True)
+  logger.info('Enable WiFiKilL3r cronjobs')
+  if 'systemd' == CRON_TYPE:
+    subprocess.check_output('systemctl --user enable WiFiKilL3r.service', shell=True)
+    subprocess.check_output('systemctl --user enable WiFiKilL3r.timer', shell=True)
+    subprocess.check_output('systemctl --user start WiFiKilL3r.service', shell=True)
+    subprocess.check_output('systemctl --user start WiFiKilL3r.timer', shell=True)
 
   return True
 
 def disable_cron_job():
-  init_cron_job()
-  if is_cron_enabled():
-    logger.info('Disable WiFiKilL3r cronjobs')
-    if 'systemd' == CRON_TYPE:
-      subprocess.check_output('systemctl --user stop WiFiKilL3r.timer', shell=True)
-      subprocess.check_output('systemctl --user stop WiFiKilL3r.service', shell=True)
-      subprocess.check_output('systemctl --user disable WiFiKilL3r.service', shell=True)
-      subprocess.check_output('systemctl --user disable WiFiKilL3r.timer', shell=True)
+  logger.info('Disable WiFiKilL3r cronjobs')
+  if 'systemd' == CRON_TYPE:
+    subprocess.check_output('systemctl --user stop WiFiKilL3r.timer', shell=True)
+    subprocess.check_output('systemctl --user stop WiFiKilL3r.service', shell=True)
+    subprocess.check_output('systemctl --user disable WiFiKilL3r.service', shell=True)
+    subprocess.check_output('systemctl --user disable WiFiKilL3r.timer', shell=True)
 
   return True
 
 def toggle_cron_job():
   logger.debug('Toggle Cron Job')
+  init_cron_job()
   if is_cron_enabled():
     logger.debug('From on to off')
     disable_cron_job()
@@ -203,20 +213,25 @@ def last_run():
   logger.debug('Last run: %s' % (lastrun,))
   return lastrun
 
-def run_check():
-  logger.info('Start cron run')
+def run_check(manual = False):
+  if manual:
+    logger.info('Manual check')
+  else:
+    logger.info('Start cron run')
   if is_wifi_enabled():
-    current_wifi = get_wifi_status()
-    if current_wifi == '' or current_wifi not in get_trusted_networks():
-      logger.debug('%s WiFi network is not trusted. Shutting down WiFi' % (current_wifi,))
-      # shutdown wifi
-      disable_wifi()
-      notification()
+    if runnning_hotspot():
+      logger.debug('WiFi network is running in hotspot mode. Ignore.')
     else:
-      logger.debug('%s WiFi network is trusted!!' % (current_wifi,))
+      current_wifi = get_wifi_status()
+      if current_wifi == '' or current_wifi not in get_trusted_networks():
+        logger.debug('%s WiFi network is not trusted. Shutting down WiFi' % (current_wifi,))
+        # shutdown wifi
+        disable_wifi()
+        notification()
+      else:
+        logger.debug('%s WiFi network is trusted!!' % (current_wifi,))
   else:
     logger.debug('WiFi is already disabled. Nothing to do...')
-    pass
 
   try:
     with open(LAST_RUN_FILE,'w') as f:

@@ -41,7 +41,9 @@ ApplicationWindow
     property variant last_update: 0
     property bool cronenabled: false
     property bool wifienabled: false
-    property string version: '0.6-1'
+    property bool hotspotenabled: false
+    property string currentwifi: 'None'
+    property string version: '0.7-1'
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
@@ -87,8 +89,7 @@ ApplicationWindow
         Component.onCompleted: {
             addImportPath(Qt.resolvedUrl('python'));
             importModule('WiFiKilL3r', function () {});
-            is_cron_enabled();
-            last_run();
+            timer();
         }
 
         onError: {
@@ -102,9 +103,33 @@ ApplicationWindow
             console.log('got message from python: ' + data);
         }
 
+        function timer() {
+           is_cron_enabled();
+           current_wifi();
+           running_hotspot();
+           last_run();
+        }
+
         function is_cron_enabled() {
-            call('WiFiKilL3r.is_cron_enabled', [], function(enabled) {
-                wifiKillerApp.cronenabled = enabled;
+            call('WiFiKilL3r.is_cron_enabled', [], function(state) {
+                wifiKillerApp.cronenabled = state;
+                if (state) {
+                    call('WiFiKilL3r.run_check', [true], function() {
+                        //console.log('Manual run cron job');
+                    });
+                }
+            });
+        }
+
+        function running_hotspot() {
+            call('WiFiKilL3r.runnning_hotspot', [], function(state) {
+                wifiKillerApp.hotspotenabled = state;
+            });
+        }
+
+        function current_wifi() {
+            call('WiFiKilL3r.get_wifi_status', [], function(state) {
+                wifiKillerApp.currentwifi = state;
             });
         }
 
@@ -121,16 +146,12 @@ ApplicationWindow
         }
 
         function is_trusted_network(name) {
-            //console.log('is_trusted_network: ' + name);
             // Bug: https://together.jolla.com/question/156736/2109-pyotherside-call_sync-broken/
             //return call_sync('WiFiKilL3r.is_trusted_network',[name]);
             return evaluate('WiFiKilL3r.is_trusted_network("' + name+ '")')
         }
 
         function save_trusted_network(name,save) {
-            //console.log('save_trusted_network: ' + name + ' ' + save);
-            //call_sync('WiFiKilL3r.save_trusted_network',[name,save]);
-
             call('WiFiKilL3r.save_trusted_network', [name,save], function() {
                 //console.log('Saved wifi ' + name);
             });
@@ -171,13 +192,12 @@ ApplicationWindow
 
     Timer {
         id: updateTimer
-        interval: 60000
+        interval: 30000
         running: true
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            pythonBridge.is_cron_enabled()
-            pythonBridge.last_run()
+            pythonBridge.timer()
         }
     }
 }

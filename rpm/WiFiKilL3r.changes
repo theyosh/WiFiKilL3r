@@ -8,6 +8,15 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sat Mar 02 2019 TheYOSH <theyosh@theyosh.nl> 0.7-1
+- Cleanup python code
+- Added support for Hotspot detection (will not switch off!)
+- Show connected WiFi network in status screen
+- Extra manual check when program is running
+
+* Fri Nov 02 2017 TheYOSH <theyosh@theyosh.nl> 0.6-2
+- Fix for Xperia X and other 64 ARM devices
+
 * Thu Nov 02 2017 TheYOSH <theyosh@theyosh.nl> 0.6-1
 - Code cleanup and finale tests systemd files
 

@@ -86,11 +86,23 @@ Page {
                 id: wifirunning
                 automaticCheck: false
                 checked: wifiKillerApp.wifienabled
-                text: qsTr("WiFi") + " " + (checked ? qsTr("enabled") :qsTr("disabled"))
+                text: qsTr("WiFi") + " " + (checked ? qsTr("enabled") :qsTr("disabled")) + " " + wifiKillerApp.currentwifi
                 description: qsTr("Current WiFi status")
                 onClicked: {
                     //wifiDevice.setPowered(!wifiKillerApp.wifienabled)
                     wifiKillerApp.togglewifi()
+                }
+            }
+
+            TextSwitch {
+                id: hotspotrunning
+                automaticCheck: false
+                checked: wifiKillerApp.hotspotenabled
+                text: qsTr("Hotspot") + " " + (checked ? qsTr("enabled") :qsTr("disabled"))
+                description: qsTr("Current Hotspot status")
+                onClicked: {
+                    //wifiDevice.setPowered(!wifiKillerApp.wifienabled)
+                    //wifiKillerApp.togglewifi()
                 }
             }
 
