@@ -103,6 +103,8 @@ def get_wifi_status():
     data = re.search(regex, current_wifi)
     if data is not None:
       current_wifi = data.group('ssid') + '(' + data.group('mac') + ')'
+    else:
+      current_wifi = ''
   except Exception as ex:
     logger.debug(ex)
     current_wifi = ''

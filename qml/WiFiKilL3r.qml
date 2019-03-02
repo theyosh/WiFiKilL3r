@@ -42,7 +42,7 @@ ApplicationWindow
     property bool cronenabled: false
     property bool wifienabled: false
     property bool hotspotenabled: false
-    property string currentwifi: 'None'
+    property string currentwifi: ''
     property string version: '0.7-1'
 
     initialPage: Component { MainPage { } }
@@ -70,10 +70,11 @@ ApplicationWindow
         } else {
             enable_wifi();
         }
+        pythonBridge.current_wifi();
     }
 
     function reconnect() {
-        if (wifiKillerApp.reconnecting != 1) {
+        if (wifiKillerApp.reconnecting !== 1) {
             wifiKillerApp.reconnecting = 1
             wifiDevice.setPowered(true)
         }

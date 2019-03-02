@@ -78,7 +78,7 @@ On the coverpage you have the option to reconnect your WiFi, and enable/disable 
 This app is created in order to protect your mobile device from being tracked by wifitrackers in citymalls and other public locations. The idea is that when you leave your trusted networks, there is no need to keep WiFi running. So this app will shutdown the WiFi device for you. This way it will save battery power, but more important, you can\'t be tracked!
 
 WiFiKilL3r app is created by TheYOSH https://theyosh.nl
-(c) 2016-2017')
+(c) 2016-2019')
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
                 anchors {
