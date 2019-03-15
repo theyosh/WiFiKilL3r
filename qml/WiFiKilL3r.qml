@@ -42,8 +42,9 @@ ApplicationWindow
     property bool cronenabled: false
     property bool wifienabled: false
     property bool hotspotenabled: false
+    property bool mac_verification_enabled: true
     property string currentwifi: ''
-    property string version: '0.7-1'
+    property string version: '0.8-3'
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
@@ -84,12 +85,17 @@ ApplicationWindow
         pythonBridge.toggle_cron();
     }
 
+    function toggle_mac_verification() {
+        pythonBridge.toggle_mac_verification();
+    }
+
     Python {
         id: pythonBridge
 
         Component.onCompleted: {
             addImportPath(Qt.resolvedUrl('python'));
             importModule('WiFiKilL3r', function () {});
+            is_mac_verification_enabled();
             timer();
         }
 
@@ -143,6 +149,18 @@ ApplicationWindow
         function toggle_cron() {
             call('WiFiKilL3r.toggle_cron_job', [], function() {
                 is_cron_enabled();
+            });
+        }
+
+        function toggle_mac_verification() {
+            call('WiFiKilL3r.toggle_mac_verification', [], function() {
+                is_mac_verification_enabled();
+            });
+        }
+
+        function is_mac_verification_enabled() {
+            call('WiFiKilL3r.is_mac_verification_enabled', [], function(state) {
+                wifiKillerApp.mac_verification_enabled = state;
             });
         }
 

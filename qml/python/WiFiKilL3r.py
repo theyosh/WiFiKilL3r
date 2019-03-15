@@ -10,6 +10,7 @@ import logging
 import logging.handlers
 import time
 import platform
+import configparser
 
 DEBUG = False
 
@@ -17,6 +18,7 @@ APP_DIR = '/usr/share/WiFiKilL3r'
 HOME_FOLDER = os.path.expanduser('~')
 WIFIKILLER_FOLDER = HOME_FOLDER + '/.WiFiKilL3r'
 TRUSTED_NETWORKS = WIFIKILLER_FOLDER + '/valid_networks'
+SETTINGS = WIFIKILLER_FOLDER + '/settings.cfg'
 LOG_FILE = WIFIKILLER_FOLDER + '/WiFiKilL3r.log'
 LAST_RUN_FILE = WIFIKILLER_FOLDER + '/last_run'
 DBUS_WIFI = 'dbus-send --system --print-reply --dest=net.connman /net/connman/technology/wifi'
@@ -42,7 +44,12 @@ if DEBUG:
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-def notification(title = 'WifiKilL3r status',message = 'Wifi is disabled due to leaving trusted networks!'):
+config = configparser.ConfigParser()
+config['settings'] = {'mac_verification' : True}
+if os.path.isfile(SETTINGS):
+  config.read(SETTINGS)
+
+def notification(title = 'WifiKilL3r status', message = 'Wifi is disabled due to leaving trusted networks!'):
   bus = dbus.SessionBus()
   object = bus.get_object('org.freedesktop.Notifications','/org/freedesktop/Notifications')
   wifikiller = dbus.Interface(object,'org.freedesktop.Notifications')
@@ -57,37 +64,41 @@ def notification(title = 'WifiKilL3r status',message = 'Wifi is disabled due to 
                               'category': 'x-nemo.simple.notifications'},
                               signature='sv'),
                      0)
-  logger.info('%s: %s' % (title, message,))
+  logger.info('{}: {}'.format(title, message))
 
-def get_trusted_networks():
+def get_trusted_networks(mac_verification = True):
   content = []
   try:
     with open(TRUSTED_NETWORKS) as f:
-      content = f.read().splitlines()
+      content = [(line if mac_verification else re.sub(r"\([^()]*\)$", "", line, 0, re.MULTILINE)) for line in f.read().splitlines()]
   except:
     # File does not exists, return 'nothing'
-    logger.debug('%s file does not exists yet' % (TRUSTED_NETWORKS,))
+    logger.debug('\'{}\' file does not exists yet'.format(TRUSTED_NETWORKS))
 
-  logger.debug('Loaded %s trusted networks' % (len(content),))
-  return content
+  logger.debug('Loaded {} trusted networks: {}'.format(len(content),content))
+
+  return list(set(content))
 
 def is_trusted_network(name):
-  logger.debug('Check if %s is in trusted networks' % (name,))
-  return name in get_trusted_networks()
+  if '' != name and not config.getboolean('settings', 'mac_verification'):
+    name = re.sub(r"\([^()]*\)$", "", name, 0, re.MULTILINE)
+
+  logger.debug('Check if \'{}\' is in trusted networks'.format(name))
+  return name in get_trusted_networks(config.getboolean('settings', 'mac_verification'))
 
 def save_trusted_network(name,save):
-  logger.debug('Update trusted network list with %s %s' % ('adding' if save else 'deleting', name,))
+  logger.debug('Update trusted network list with {} network \'{}\''.format('adding' if save else 'deleting', name))
 
   trusted_networks = get_trusted_networks()
   if save and name not in trusted_networks:
-    logger.info('Add network ' + name)
+    logger.info('Add network \'{}\''.format(name))
     trusted_networks.append(name)
 
   try:
     with open(TRUSTED_NETWORKS,'w+') as f:
       for trusted_network in trusted_networks:
         if not save and name == trusted_network:
-          logger.info('Deleted network ' + name)
+          logger.info('Deleted network \'{}\''.format(name))
           continue
 
         f.write(trusted_network + "\n")
@@ -95,21 +106,21 @@ def save_trusted_network(name,save):
     pass
 
 def get_wifi_status():
-  logger.debug('Getting current WiFi statuss')
+  logger.debug('Getting current WiFi status')
   current_wifi = ''
   try:
-    current_wifi =  str(subprocess.check_output('/usr/sbin/iw dev wlan0 link', shell=True).strip())
-    regex = re.compile(r'Connected to (?P<mac>[^ ]+).*SSID: (?P<ssid>[^\\n]+)')
-    data = re.search(regex, current_wifi)
-    if data is not None:
-      current_wifi = data.group('ssid') + '(' + data.group('mac') + ')'
-    else:
-      current_wifi = ''
+    data =  str(subprocess.check_output('/usr/sbin/iw dev wlan0 link', shell=True).decode())
+    for line in data.splitlines():
+      if 'Connected to ' in line:
+        current_wifi = '({})'.format(line.strip().split()[2])
+      if 'SSID: ' in line:
+        current_wifi = '{}{}'.format(line.strip()[5:].strip(),current_wifi)
+
   except Exception as ex:
     logger.debug(ex)
     current_wifi = ''
 
-  logger.debug('Connected to WiFi network: %s' % (current_wifi,))
+  logger.debug('Connected to WiFi network: \'{}\''.format(current_wifi))
   return current_wifi
 
 def is_wifi_enabled():
@@ -121,7 +132,7 @@ def is_wifi_enabled():
   except:
     enabled = False
 
-  logger.debug('Wifi is %s' % ('enabled' if enabled else 'disabled',))
+  logger.debug('Wifi is {}'.format('enabled' if enabled else 'disabled'))
   return enabled
 
 def runnning_hotspot():
@@ -133,8 +144,28 @@ def runnning_hotspot():
   except:
     enabled = False
 
-  logger.debug('Hotspot is %s' % ('enabled' if enabled else 'disabled',))
+  logger.debug('Hotspot is {}'.format('enabled' if enabled else 'disabled'))
   return enabled
+
+def is_mac_verification_enabled():
+  return config.getboolean('settings', 'mac_verification')
+
+def enable_mac_verification():
+  config['settings']['mac_verification'] = 'True'
+  save_mac_verification()
+
+def disable_mac_verification():
+  config['settings']['mac_verification'] = 'False'
+  save_mac_verification()
+
+def toggle_mac_verification():
+  config['settings']['mac_verification'] = str(not config.getboolean('settings', 'mac_verification'))
+  save_mac_verification()
+  return True
+
+def save_mac_verification():
+  with open(SETTINGS, 'w') as configfile:
+    config.write(configfile)
 
 def disable_wifi():
   if is_wifi_enabled():
@@ -158,7 +189,7 @@ def is_cron_enabled():
     cron_enabled = os.path.isfile(HOME_FOLDER + '/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer') and \
                    os.path.isfile(HOME_FOLDER + '/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service')
 
-  logger.debug('Cron is %s' % ('enabled' if cron_enabled else 'disabled'))
+  logger.debug('Cron is {}'.format('enabled' if cron_enabled else 'disabled'))
   return cron_enabled
 
 def enable_cron_job():
@@ -212,7 +243,7 @@ def last_run():
   except Exception as er:
     pass
 
-  logger.debug('Last run: %s' % (lastrun,))
+  logger.debug('Last run: {}'.format(lastrun))
   return lastrun
 
 def run_check(manual = False):
@@ -222,16 +253,20 @@ def run_check(manual = False):
     logger.info('Start cron run')
   if is_wifi_enabled():
     if runnning_hotspot():
-      logger.debug('WiFi network is running in hotspot mode. Ignore.')
+      logger.info('WiFi network is running in hotspot mode. Ignore.')
     else:
+      logger.info('Running with MAC verification?: {}'.format(config.getboolean('settings', 'mac_verification')))
       current_wifi = get_wifi_status()
-      if current_wifi == '' or current_wifi not in get_trusted_networks():
-        logger.debug('%s WiFi network is not trusted. Shutting down WiFi' % (current_wifi,))
+      if '' != current_wifi and not config.getboolean('settings', 'mac_verification'):
+        current_wifi = re.sub(r"\([^()]*\)$", "", current_wifi, 0, re.MULTILINE)
+
+      if current_wifi == '' or current_wifi not in get_trusted_networks(config.getboolean('settings', 'mac_verification')):
+        logger.debug('WiFi network \'{}\' is not trusted. Shutting down WiFi'.format(current_wifi))
         # shutdown wifi
         disable_wifi()
         notification()
       else:
-        logger.debug('%s WiFi network is trusted!!' % (current_wifi,))
+        logger.debug('WiFi network \'{}\' is trusted!!'.format(current_wifi))
   else:
     logger.debug('WiFi is already disabled. Nothing to do...')
 

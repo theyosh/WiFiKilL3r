@@ -8,6 +8,15 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Mar 10 2019 TheYOSH <theyosh@theyosh.nl> 0.8-3
+- Fixed saving networks with MAC verification disabled.
+
+* Sun Mar 10 2019 TheYOSH <theyosh@theyosh.nl> 0.8-2
+- Changed code for Wifi detection.
+
+* Sat Mar 09 2019 TheYOSH <theyosh@theyosh.nl> 0.8-1
+- Add settings page for disabling MAC verification
+
 * Sat Mar 02 2019 TheYOSH <theyosh@theyosh.nl> 0.7-1
 - Cleanup python code
 - Added support for Hotspot detection (will not switch off!)

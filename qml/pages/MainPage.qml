@@ -47,6 +47,10 @@ Page {
                 text: qsTr("Manage trusted networks")
                 onClicked: pageStack.push(Qt.resolvedUrl("NetworksPage.qml"))
             }
+            MenuItem {
+                text: qsTr("Settings")
+                onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+            }
         }
 
         // Tell SilicaFlickable the height of its content.

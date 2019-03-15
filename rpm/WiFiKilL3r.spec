@@ -13,8 +13,8 @@ Name:       WiFiKilL3r
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    WiFiKilL3r
-Version:    0.7
-Release:    1
+Version:    0.8
+Release:    3
 Group:      Qt/Qt
 License:    LICENSE
 URL:        https://theyosh.nl
