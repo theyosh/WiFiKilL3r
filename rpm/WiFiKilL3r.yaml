@@ -1,7 +1,7 @@
 Name: WiFiKilL3r
 Summary: WiFiKilL3r
-Version: 0.8
-Release: 3
+Version: 0.9
+Release: 1
 # The contents of the Group field should be one of the groups listed here:
 # http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
 Group: Qt/Qt
@@ -35,6 +35,8 @@ Requires:
   - sailfishsilica-qt5 >= 0.10.9 
   - pyotherside-qml-plugin-python3-qt5
   - dbus-python3
+  - systemd
+  - connman-tools
 
 # All installed files
 Files:
@@ -46,6 +48,7 @@ Files:
 # For more information about yaml and what's supported in Sailfish OS
 # build system, please see https://wiki.merproject.org/wiki/Spectacle
 
+# Post is not allowed officially.... :(
 Post:
  - # Give root rights to wifi scripts... :(
  - chmod 4755 /usr/share/WiFiKilL3r/qml/bin/*-wifi-root_*

@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Mon Dec 10 2019 TheYOSH <theyosh@theyosh.nl> 0.9-1
+- Updated needed dependencies and make sure all rights are correct.
+
 * Sun Mar 10 2019 TheYOSH <theyosh@theyosh.nl> 0.8-3
 - Fixed saving networks with MAC verification disabled.
 

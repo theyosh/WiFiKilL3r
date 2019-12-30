@@ -44,7 +44,7 @@ ApplicationWindow
     property bool hotspotenabled: false
     property bool mac_verification_enabled: true
     property string currentwifi: ''
-    property string version: '0.8-3'
+    property string version: '0.9-1'
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")

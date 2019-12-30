@@ -13,8 +13,8 @@ Name:       WiFiKilL3r
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    WiFiKilL3r
-Version:    0.8
-Release:    3
+Version:    0.9
+Release:    1
 Group:      Qt/Qt
 License:    LICENSE
 URL:        https://theyosh.nl
@@ -23,6 +23,8 @@ Source100:  WiFiKilL3r.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   pyotherside-qml-plugin-python3-qt5
 Requires:   dbus-python3
+Requires:   systemd
+Requires:   connman-tools
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -72,8 +74,8 @@ desktop-file-install --delete-original       \
 # >> files
 # << files
 
+# Post is officially not allowed.... :(
 %post
-# Give root rights to wifi scripts... :(
 chmod 4755 /usr/share/WiFiKilL3r/qml/bin/*-wifi-root_*
 chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r_Cron.sh
 chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r.py
