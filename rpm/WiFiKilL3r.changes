@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun May 17 2020 TheYOSH <theyosh@theyosh.nl> 0.11-1
+- Fixed OS detection which was causing ARM devices not to work anymore.
+
 * Fri Jan 03 2020 TheYOSH <theyosh@theyosh.nl> 0.10-1
 - Updated needed dependencies and make sure all rights are correct (2).
 - Added option to enable/disable notifications
