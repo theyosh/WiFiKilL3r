@@ -13,7 +13,7 @@ Name:       WiFiKilL3r
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    WiFiKilL3r
-Version:    0.9
+Version:    0.10
 Release:    1
 Group:      Qt/Qt
 License:    LICENSE
@@ -24,6 +24,7 @@ Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   pyotherside-qml-plugin-python3-qt5
 Requires:   dbus-python3
 Requires:   systemd
+Requires:   systemd-user-session-targets
 Requires:   connman-tools
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
@@ -80,4 +81,20 @@ chmod 4755 /usr/share/WiFiKilL3r/qml/bin/*-wifi-root_*
 chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r_Cron.sh
 chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r.py
 rm /home/nemo/.local/share/systemd/user/WiFiKilL3r.* 2> /dev/null || true
-cp -u /usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.* /usr/lib/systemd/user/ 2> /dev/null || true
+rm /usr/lib/systemd/user/WiFiKilL3r.* 2> /dev/null || true
+cp -u /usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.* /home/nemo/.config/systemd/user/ 2> /dev/null || true
+chown nemo. /home/nemo/.config/systemd/user/WiFiKilL3r.*
+su -c 'systemctl --user daemon-reload' -s /bin/bash nemo
+
+# Due to some fuck ups.... we need to clean up...
+if [ -L /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer ] && [ ! -e /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer ]
+then
+  rm /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer
+  su -c 'systemctl --user enable WiFiKilL3r.timer' -s /bin/bash nemo
+fi
+
+if [ -L /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service ] && [ ! -e /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service ]
+then
+  rm /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service
+  su -c 'systemctl --user enable WiFiKilL3r.service' -s /bin/bash nemo
+fi

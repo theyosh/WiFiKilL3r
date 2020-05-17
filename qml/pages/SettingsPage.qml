@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 Page {
@@ -41,6 +41,17 @@ Page {
                 description: qsTr('Current Accesspoint MAC verification status')
                 onClicked: {
                     wifiKillerApp.toggle_mac_verification()
+                }
+            }
+
+            TextSwitch {
+                id: notifications_switch
+                automaticCheck: false
+                checked: wifiKillerApp.notifications_enabled
+                text: qsTr('Notifications') + ' ' + (checked ? qsTr('enabled') :qsTr('disabled'))
+                description: qsTr('Current notification status')
+                onClicked: {
+                    wifiKillerApp.toggle_notifications()
                 }
             }
         }

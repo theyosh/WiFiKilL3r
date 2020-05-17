@@ -21,10 +21,12 @@ TRUSTED_NETWORKS = WIFIKILLER_FOLDER + '/valid_networks'
 SETTINGS = WIFIKILLER_FOLDER + '/settings.cfg'
 LOG_FILE = WIFIKILLER_FOLDER + '/WiFiKilL3r.log'
 LAST_RUN_FILE = WIFIKILLER_FOLDER + '/last_run'
+SYSTEMD_SERVICE = HOME_FOLDER + '/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service'
+SYSTEMD_TIMER = HOME_FOLDER + '/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer'
 DBUS_WIFI = 'dbus-send --system --print-reply --dest=net.connman /net/connman/technology/wifi'
-CRON_TYPE = 'systemd'
+#CRON_TYPE = 'systemd'
 CRON_TIME_OUT_ERROR = 10 * 60
-ARM_DEVICE = 'arm' in platform.processor() or 'aarch64' in platform.processor()
+ARM_DEVICE = 'arm' in platform.machine() or 'aarch64' in platform.machine()
 
 if not os.path.isdir(WIFIKILLER_FOLDER):
   os.mkdir(WIFIKILLER_FOLDER)
@@ -45,25 +47,26 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 config = configparser.ConfigParser()
-config['settings'] = {'mac_verification' : True}
+config['settings'] = {'mac_verification' : True, 'show_notifications' : True}
 if os.path.isfile(SETTINGS):
   config.read(SETTINGS)
 
-def notification(title = 'WifiKilL3r status', message = 'Wifi is disabled due to leaving trusted networks!'):
-  bus = dbus.SessionBus()
-  object = bus.get_object('org.freedesktop.Notifications','/org/freedesktop/Notifications')
-  wifikiller = dbus.Interface(object,'org.freedesktop.Notifications')
-  wifikiller.Notify('WiFiKilL3r',
-                     0,
-                     APP_DIR + '/qml/images/WiFiKilL3r.png',
-                     title,
-                     message,
-                     dbus.Array(['default', '']),
-                     dbus.Dictionary({'x-nemo-preview-body': message,
-                              'x-nemo-preview-summary': title,
-                              'category': 'x-nemo.simple.notifications'},
-                              signature='sv'),
-                     0)
+def notification(message = 'Wifi is disabled due to leaving trusted networks!', title = 'WifiKilL3r status'):
+  if is_notifications_enabled():
+    bus = dbus.SessionBus()
+    object = bus.get_object('org.freedesktop.Notifications','/org/freedesktop/Notifications')
+    wifikiller = dbus.Interface(object,'org.freedesktop.Notifications')
+    wifikiller.Notify('WiFiKilL3r',
+                       0,
+                       APP_DIR + '/qml/images/WiFiKilL3r.png',
+                       title,
+                       message,
+                       dbus.Array(['default', '']),
+                       dbus.Dictionary({'x-nemo-preview-body': message,
+                                'x-nemo-preview-summary': title,
+                                'category': 'x-nemo.simple.notifications'},
+                                signature='sv'),
+                       0)
   logger.info('{}: {}'.format(title, message))
 
 def get_trusted_networks(mac_verification = True):
@@ -129,7 +132,7 @@ def is_wifi_enabled():
     wifi_enabled = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.GetProperties', shell=True).strip())
     regex = re.compile(r'string "Powered"\\n\s+variant\s+boolean true')
     enabled = re.search(regex, wifi_enabled) is not None
-  except:
+  except Exception as ex:
     enabled = False
 
   logger.debug('Wifi is {}'.format('enabled' if enabled else 'disabled'))
@@ -141,74 +144,103 @@ def runnning_hotspot():
     wifi_enabled = str(subprocess.check_output(DBUS_WIFI + ' net.connman.Technology.GetProperties', shell=True).strip())
     regex = re.compile(r'string "Tethering"\\n\s+variant\s+boolean true')
     enabled = re.search(regex, wifi_enabled) is not None
-  except:
+  except Exception as ex:
     enabled = False
 
   logger.debug('Hotspot is {}'.format('enabled' if enabled else 'disabled'))
   return enabled
+
+def is_notifications_enabled():
+  return config.getboolean('settings', 'show_notifications')
+
+def enable_notificatiosn():
+  config['settings']['show_notifications'] = 'True'
+  save_settings()
+
+def disable_notifications():
+  config['settings']['show_notifications'] = 'False'
+  save_settings()
+
+def toggle_notifications():
+  config['settings']['show_notifications'] = str(not config.getboolean('settings', 'show_notifications'))
+  save_settings()
+  return True
 
 def is_mac_verification_enabled():
   return config.getboolean('settings', 'mac_verification')
 
 def enable_mac_verification():
   config['settings']['mac_verification'] = 'True'
-  save_mac_verification()
+  save_settings()
 
 def disable_mac_verification():
   config['settings']['mac_verification'] = 'False'
-  save_mac_verification()
+  save_settings()
 
 def toggle_mac_verification():
   config['settings']['mac_verification'] = str(not config.getboolean('settings', 'mac_verification'))
-  save_mac_verification()
+  save_settings()
   return True
 
-def save_mac_verification():
+def save_settings():
   with open(SETTINGS, 'w') as configfile:
     config.write(configfile)
 
 def disable_wifi():
   if is_wifi_enabled():
-    logger.debug('Disable wifi')
-    data = str(subprocess.check_output(APP_DIR + '/qml/bin/stop-wifi-root' + ('_arm' if ARM_DEVICE else '_intel'), shell=True))
+    cmd = APP_DIR + '/qml/bin/stop-wifi-root' + ('_arm' if ARM_DEVICE else '_intel')
+    logger.debug('Disable wifi: {}'.format(cmd))
+    data = str(subprocess.check_output(cmd, shell=True))
+    logger.debug(data)
 
 def enable_wifi():
   if not is_wifi_enabled():
-    logger.debug('Enable wifi')
-    data = str(subprocess.check_output(APP_DIR + '/qml/bin/start-wifi-root' + ('_arm' if ARM_DEVICE else '_intel'), shell=True))
+    cmd = APP_DIR + '/qml/bin/start-wifi-root' + ('_arm' if ARM_DEVICE else '_intel')
+    logger.debug('Enable wifi: {}'.format(cmd))
+    data = str(subprocess.check_output(cmd, shell=True))
+    logger.debug(data)
 
 def init_cron_job():
   # Dirty hack.... :(
   logger.info('Reloading systemd daemon')
+#  if not os.path.isfile(SYSTEMD_SERVICE):
+#    with open(SYSTEMD_SERVICE,'w') as service_file:
+#      service_file.write("[Unit]\nDescription=WiFiKilL3r\nAfter=ofono.service lipstick.service\n")
+#      service_file.write("[Service]\nType=simple\nExecStart=/bin/bash " + APP_DIR + "/qml/python/WiFiKilL3r_Cron.sh\n")
+#      service_file.write("[Install]\nWantedBy=user-session.target\n")
+
+#  if not os.path.isfile(SYSTEMD_TIMER):
+#    with open(SYSTEMD_TIMER,'w') as timer_file:
+#      timer_file.write("[Unit]\nDescription=WiFiKilL3r Cronjob\n")
+#      timer_file.write("[Timer]\nOnUnitActiveSec=60s\n")
+#      timer_file.write("[Install]\nWantedBy=timers.target\n")
+
   subprocess.check_output('systemctl --user daemon-reload', shell=True)
   return True
 
 def is_cron_enabled():
   cron_enabled = False
-  if 'systemd' == CRON_TYPE:
-    cron_enabled = os.path.isfile(HOME_FOLDER + '/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer') and \
-                   os.path.isfile(HOME_FOLDER + '/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service')
+  cron_enabled = os.path.isfile(SYSTEMD_SERVICE) and \
+                 os.path.isfile(SYSTEMD_TIMER)
 
   logger.debug('Cron is {}'.format('enabled' if cron_enabled else 'disabled'))
   return cron_enabled
 
 def enable_cron_job():
   logger.info('Enable WiFiKilL3r cronjobs')
-  if 'systemd' == CRON_TYPE:
-    subprocess.check_output('systemctl --user enable WiFiKilL3r.service', shell=True)
-    subprocess.check_output('systemctl --user enable WiFiKilL3r.timer', shell=True)
-    subprocess.check_output('systemctl --user start WiFiKilL3r.service', shell=True)
-    subprocess.check_output('systemctl --user start WiFiKilL3r.timer', shell=True)
+  subprocess.check_output('systemctl --user enable WiFiKilL3r.service', shell=True)
+  subprocess.check_output('systemctl --user enable WiFiKilL3r.timer', shell=True)
+  subprocess.check_output('systemctl --user start WiFiKilL3r.service', shell=True)
+  subprocess.check_output('systemctl --user start WiFiKilL3r.timer', shell=True)
 
   return True
 
 def disable_cron_job():
   logger.info('Disable WiFiKilL3r cronjobs')
-  if 'systemd' == CRON_TYPE:
-    subprocess.check_output('systemctl --user stop WiFiKilL3r.timer', shell=True)
-    subprocess.check_output('systemctl --user stop WiFiKilL3r.service', shell=True)
-    subprocess.check_output('systemctl --user disable WiFiKilL3r.service', shell=True)
-    subprocess.check_output('systemctl --user disable WiFiKilL3r.timer', shell=True)
+  subprocess.check_output('systemctl --user stop WiFiKilL3r.timer', shell=True)
+  subprocess.check_output('systemctl --user stop WiFiKilL3r.service', shell=True)
+  subprocess.check_output('systemctl --user disable WiFiKilL3r.service', shell=True)
+  subprocess.check_output('systemctl --user disable WiFiKilL3r.timer', shell=True)
 
   return True
 

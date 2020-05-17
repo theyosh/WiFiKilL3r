@@ -30,7 +30,7 @@
 
 import MeeGo.Connman 0.2
 import io.thp.pyotherside 1.4
-import QtQuick 2.0
+import QtQuick 2.2
 import Sailfish.Silica 1.0
 import "pages"
 
@@ -43,8 +43,9 @@ ApplicationWindow
     property bool wifienabled: false
     property bool hotspotenabled: false
     property bool mac_verification_enabled: true
+    property bool notifications_enabled: true
     property string currentwifi: ''
-    property string version: '0.9-1'
+    property string version: '0.10-1'
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
@@ -89,6 +90,10 @@ ApplicationWindow
         pythonBridge.toggle_mac_verification();
     }
 
+    function toggle_notifications() {
+        pythonBridge.toggle_notifications();
+    }
+
     Python {
         id: pythonBridge
 
@@ -96,6 +101,7 @@ ApplicationWindow
             addImportPath(Qt.resolvedUrl('python'));
             importModule('WiFiKilL3r', function () {});
             is_mac_verification_enabled();
+            is_notifications_enabled();
             timer();
         }
 
@@ -161,6 +167,23 @@ ApplicationWindow
         function is_mac_verification_enabled() {
             call('WiFiKilL3r.is_mac_verification_enabled', [], function(state) {
                 wifiKillerApp.mac_verification_enabled = state;
+            });
+        }
+
+        function toggle_notifications() {
+            call('WiFiKilL3r.toggle_notifications', [], function() {
+                // Due to a-sync calls, the update of the state will be later. So we anticipate on this here already....
+                if (!wifiKillerApp.notifications_enabled) {
+                    call('WiFiKilL3r.notification', ['Notifications are enabled'], function(state) {
+                    });
+                }
+                is_notifications_enabled();
+            });
+        }
+
+        function is_notifications_enabled() {
+            call('WiFiKilL3r.is_notifications_enabled', [], function(state) {
+                wifiKillerApp.notifications_enabled = state;
             });
         }
 

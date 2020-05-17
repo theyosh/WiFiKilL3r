@@ -8,6 +8,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Fri Jan 03 2020 TheYOSH <theyosh@theyosh.nl> 0.10-1
+- Updated needed dependencies and make sure all rights are correct (2).
+- Added option to enable/disable notifications
+
 * Mon Dec 10 2019 TheYOSH <theyosh@theyosh.nl> 0.9-1
 - Updated needed dependencies and make sure all rights are correct.
 

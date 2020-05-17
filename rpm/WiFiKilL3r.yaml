@@ -1,6 +1,6 @@
 Name: WiFiKilL3r
 Summary: WiFiKilL3r
-Version: 0.9
+Version: 0.10
 Release: 1
 # The contents of the Group field should be one of the groups listed here:
 # http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
@@ -36,6 +36,7 @@ Requires:
   - pyotherside-qml-plugin-python3-qt5
   - dbus-python3
   - systemd
+  - systemd-user-session-targets
   - connman-tools
 
 # All installed files
@@ -50,9 +51,22 @@ Files:
 
 # Post is not allowed officially.... :(
 Post:
- - # Give root rights to wifi scripts... :(
- - chmod 4755 /usr/share/WiFiKilL3r/qml/bin/*-wifi-root_*
- - chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r_Cron.sh
- - chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r.py
- - rm /home/nemo/.local/share/systemd/user/WiFiKilL3r.* 2> /dev/null || true
- - cp -u /usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.* /usr/lib/systemd/user/ 2> /dev/null || true
+  - chmod 4755 /usr/share/WiFiKilL3r/qml/bin/*-wifi-root_*
+  - chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r_Cron.sh
+  - chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r.py
+  - rm /home/nemo/.local/share/systemd/user/WiFiKilL3r.* 2> /dev/null || true
+  - rm /usr/lib/systemd/user/WiFiKilL3r.* 2> /dev/null || true
+  - cp -u /usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.* /home/nemo/.config/systemd/user/ 2> /dev/null || true
+  - chown nemo. /home/nemo/.config/systemd/user/WiFiKilL3r.*
+  - # Due to some fuck ups.... we need to clean up...
+  - if [ -L /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer ] && [ ! -e /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer ]
+  - then
+  -   rm /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer
+  - #  ln -s /home/nemo/.config/systemd/user/WiFiKilL3r.timer /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer
+  - fi
+
+  - if [ -L /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service ] && [ ! -e /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service ]
+  - then
+  -   rm /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service
+  - #  ln -s /home/nemo/.config/systemd/user/WiFiKilL3r.service /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service
+  - fi
