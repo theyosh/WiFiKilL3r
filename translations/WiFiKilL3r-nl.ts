@@ -151,17 +151,17 @@ WiFiKilL3r app is gemaakt door TheYOSH https://theyosh.nl</translation>
     <message>
         <location filename="../qml/pages/NetworksPage.qml" line="9"/>
         <source>Please, turn WiFi on</source>
-        <translation type="unfinished"></translation>
+        <translation>Zet uw Wifi aan aub</translation>
     </message>
     <message>
         <location filename="../qml/pages/NetworksPage.qml" line="16"/>
         <source>Add trusted network</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg vertrouwd netwerk toe</translation>
     </message>
     <message>
         <location filename="../qml/pages/NetworksPage.qml" line="35"/>
         <source>bssid</source>
-        <translation type="unfinished"></translation>
+        <translation>bssid</translation>
     </message>
 </context>
 <context>
