@@ -25,8 +25,7 @@ On the coverpage you have the option to reconnect your WiFi, and enable/disable 
 *Why*
 This app is created in order to protect your mobile device from being tracked by wifitrackers in citymalls and other public locations. The idea is that when you leave your trusted networks, there is no need to keep WiFi running. So this app will shutdown the WiFi device for you. This way it will save battery power, but more important, you can&apos;t be tracked!
 
-WiFiKilL3r app is created by TheYOSH https://theyosh.nl
-(c) 2016-2021</source>
+WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -111,63 +110,15 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl
 <context>
     <name>NetworksPage</name>
     <message>
-        <source>About WiFiKilL3r</source>
+        <source>Please, turn WiFi on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Manage trusted networks</source>
+        <source>Add trusted network</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>WiFiKilL3r</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Current status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>WiFi</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>disabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Current WiFi status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hotspot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Current Hotspot status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>KilL3r</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Current KilL3r status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loading...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last check</source>
+        <source>bssid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

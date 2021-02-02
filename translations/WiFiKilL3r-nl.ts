@@ -149,66 +149,6 @@ WiFiKilL3r app is gemaakt door TheYOSH https://theyosh.nl</translation>
 <context>
     <name>NetworksPage</name>
     <message>
-        <source>About WiFiKilL3r</source>
-        <translation type="vanished">Over WiFiKilL3r</translation>
-    </message>
-    <message>
-        <source>Manage trusted networks</source>
-        <translation type="vanished">Beheer vertrouwde netwerken</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation type="vanished">Instellingen</translation>
-    </message>
-    <message>
-        <source>WiFiKilL3r</source>
-        <translation type="vanished">WiFiKilL3r</translation>
-    </message>
-    <message>
-        <source>Current status</source>
-        <translation type="vanished">Huidige status</translation>
-    </message>
-    <message>
-        <source>WiFi</source>
-        <translation type="vanished">Wifi</translation>
-    </message>
-    <message>
-        <source>enabled</source>
-        <translation type="vanished">geactiveerd</translation>
-    </message>
-    <message>
-        <source>disabled</source>
-        <translation type="vanished">gedeactiveerd</translation>
-    </message>
-    <message>
-        <source>Current WiFi status</source>
-        <translation type="vanished">Huidige wifi status</translation>
-    </message>
-    <message>
-        <source>Hotspot</source>
-        <translation type="vanished">Hotspot</translation>
-    </message>
-    <message>
-        <source>Current Hotspot status</source>
-        <translation type="vanished">Huidige hotspot status</translation>
-    </message>
-    <message>
-        <source>KilL3r</source>
-        <translation type="vanished">KilL3r</translation>
-    </message>
-    <message>
-        <source>Current KilL3r status</source>
-        <translation type="vanished">Huidige KilL3r status</translation>
-    </message>
-    <message>
-        <source>Loading...</source>
-        <translation type="vanished">Laden...</translation>
-    </message>
-    <message>
-        <source>Last check</source>
-        <translation type="vanished">Laatste controle</translation>
-    </message>
-    <message>
         <location filename="../qml/pages/NetworksPage.qml" line="9"/>
         <source>Please, turn WiFi on</source>
         <translation type="unfinished"></translation>
