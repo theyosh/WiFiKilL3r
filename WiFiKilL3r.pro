@@ -16,15 +16,27 @@ CONFIG += sailfishapp
 
 SOURCES += src/WiFiKilL3r.cpp
 
-OTHER_FILES += qml/WiFiKilL3r.qml \
+DISTFILES += qml/WiFiKilL3r.qml \
     qml/cover/CoverPage.qml \
+    qml/pages/AboutPage.qml \
+    qml/pages/MainPage.qml \
+    qml/pages/NetworksPage.qml \
+    qml/pages/SettingsPage.qml \
+    qml/images/WiFiKilL3r.png \
+    qml/python/WiFiKilL3r.py \
+    qml/python/WiFiKilL3r_Cron.sh \
+    qml/python/systemd/WiFiKilL3r.service \
+    qml/python/systemd/WiFiKilL3r.timer \
+    qml/bin/start-wifi-root_arm \
+    qml/bin/stop-wifi-root_arm \
+    rpm/WiFiKilL3r.changes \
+    rpm/WiFiKilL3r.changes.run.in \
     rpm/WiFiKilL3r.spec \
     rpm/WiFiKilL3r.yaml \
     translations/*.ts \
-    WiFiKilL3r.png \
     WiFiKilL3r.desktop
 
-SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
+SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172
 
 # to disable building translations every time, comment out the
 # following CONFIG line
@@ -36,20 +48,3 @@ CONFIG += sailfishapp_i18n
 # modify the localized app name in the the .desktop file.
 TRANSLATIONS += translations/WiFiKilL3r-nl.ts \
     translations/WiFiKilL3r-sv.ts
-
-DISTFILES += \
-    qml/pages/MainPage.qml \
-    qml/pages/AboutPage.qml \
-    qml/images/WiFiKilL3r.png \
-    qml/python/WiFiKilL3r.py \
-    systemd/WiFiKilL3r.service \
-    systemd/WiFiKilL3r.timer \
-    rpm/WiFiKilL3r.changes \
-    qml/python/WiFiKilL3r_Cron.sh \
-    qml/python/systemd/WiFiKilL3r.service \
-    qml/python/systemd/WiFiKilL3r.timer \
-    qml/pages/NetworksPage.qml \
-    qml/bin/start-wifi-root_arm \
-    qml/bin/stop-wifi-root_arm \
-    qml/bin/start-wifi-root_intel \
-    qml/bin/stop-wifi-root_intel

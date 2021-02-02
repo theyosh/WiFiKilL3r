@@ -1,9 +1,9 @@
 Name: WiFiKilL3r
 Summary: WiFiKilL3r
-Version: 0.11
-Release: 2
+Version: 0.12
+Release: 1
 # The contents of the Group field should be one of the groups listed here:
-# http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
+# https://github.com/mer-tools/spectacle/blob/master/data/GROUPS
 Group: Qt/Qt
 URL: https://theyosh.nl
 License: LICENSE
@@ -13,10 +13,7 @@ Sources:
 - '%{name}-%{version}.tar.bz2'
 Description: |
   WiFiKilL3r will monitor your WiFi status and shuts it down when not connected to a trusted network. This will protect your from WiFi location tracking devices in cities and other locations.
-Configure: none
-# The qtc5 builder inserts macros to allow QtCreator to have fine
-# control over qmake/make execution
-Builder: qtc5
+Builder: qmake5
 
 # This section specifies build dependencies that are resolved using pkgconfig.
 # This is the preferred way of specifying build dependencies for your package.
@@ -51,20 +48,28 @@ Files:
 
 # Post is not allowed officially.... :(
 Post:
+  - if [ -d /home/defaultuser ]
+  - then
+  -   export WIFIKILLER_HOME_DIR="/home/defaultuser/"
+  -   export WIFIKILLER_USER="defaultuser"
+  - else
+  -   export WIFIKILLER_HOME_DIR="/home/nemo/"
+  -   export WIFIKILLER_USER="nemo"
+  - fi
   - chmod 4755 /usr/share/WiFiKilL3r/qml/bin/*-wifi-root_*
   - chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r_Cron.sh
   - chmod 4755 /usr/share/WiFiKilL3r/qml/python/WiFiKilL3r.py
-  - rm /home/nemo/.local/share/systemd/user/WiFiKilL3r.* 2> /dev/null || true
+  - rm ${WIFIKILLER_HOME_DIR}.local/share/systemd/user/WiFiKilL3r.* 2> /dev/null || true
   - rm /usr/lib/systemd/user/WiFiKilL3r.* 2> /dev/null || true
-  - cp -u /usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.* /home/nemo/.config/systemd/user/ 2> /dev/null || true
-  - chown nemo. /home/nemo/.config/systemd/user/WiFiKilL3r.*
+  - cp -u /usr/share/WiFiKilL3r/qml/python/systemd/WiFiKilL3r.* ${WIFIKILLER_HOME_DIR}.config/systemd/user/ 2> /dev/null || true
+  - chown ${WIFIKILLER_USER}. ${WIFIKILLER_HOME_DIR}.config/systemd/user/WiFiKilL3r.*
+  - su -c 'systemctl --user daemon-reload' -s /bin/bash ${WIFIKILLER_USER}
   - # Due to some fuck ups.... we need to clean up...
   - if [ -L /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer ] && [ ! -e /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer ]
   - then
   -   rm /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer
   - #  ln -s /home/nemo/.config/systemd/user/WiFiKilL3r.timer /home/nemo/.config/systemd/user/timers.target.wants/WiFiKilL3r.timer
   - fi
-
   - if [ -L /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service ] && [ ! -e /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service ]
   - then
   -   rm /home/nemo/.config/systemd/user/user-session.target.wants/WiFiKilL3r.service

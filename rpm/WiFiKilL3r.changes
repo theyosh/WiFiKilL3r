@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Mon Feb 1 2021 TheYOSH <theyosh@theyosh.nl> 0.12-1
+- Added support for new Sailfish user: defaultuser.
+
 * Mon May 18 2020 TheYOSH <theyosh@theyosh.nl> 0.11-2
 - Fixed adding trusted networks. Editor f*cked the code.....
 
@@ -79,4 +82,3 @@
 
 * Wed Jun 22 2016 TheYOSH <theyosh@theyosh.nl> 0.1-1
 - Initial version. Beta state
-
