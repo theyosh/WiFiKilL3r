@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="sv">
 <context>
     <name>AboutPage</name>
     <message>
         <location filename="../qml/pages/AboutPage.qml" line="20"/>
         <source>About WiFiKilL3r</source>
-        <translation type="unfinished"></translation>
+        <translation>Om WiFiKilL3r</translation>
     </message>
     <message>
         <location filename="../qml/pages/AboutPage.qml" line="24"/>
         <source>WiFiKilL3r</source>
-        <translation type="unfinished"></translation>
+        <translation>WiFiKilL3r</translation>
     </message>
     <message>
         <location filename="../qml/pages/AboutPage.qml" line="37"/>
@@ -37,7 +37,7 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/cover/CoverPage.qml" line="15"/>
         <source>WiFiKilL3r</source>
-        <translation type="unfinished"></translation>
+        <translation>WiFiKilL3r</translation>
     </message>
     <message>
         <location filename="../qml/cover/CoverPage.qml" line="22"/>
@@ -47,7 +47,7 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/cover/CoverPage.qml" line="22"/>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>Läser in ...</translation>
     </message>
 </context>
 <context>
@@ -55,12 +55,12 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="13"/>
         <source>About WiFiKilL3r</source>
-        <translation type="unfinished"></translation>
+        <translation>Om WiFiKilL3r</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="17"/>
         <source>Manage trusted networks</source>
-        <translation type="unfinished"></translation>
+        <translation>Hantera betrodda nätverk</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="21"/>
@@ -70,36 +70,36 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="37"/>
         <source>WiFiKilL3r</source>
-        <translation type="unfinished"></translation>
+        <translation>WiFiKilL3r</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="54"/>
         <source>Current status</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuell status</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="63"/>
         <source>WiFi</source>
-        <translation type="unfinished"></translation>
+        <translation>WiFi</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="63"/>
         <location filename="../qml/pages/MainPage.qml" line="75"/>
         <location filename="../qml/pages/MainPage.qml" line="87"/>
         <source>enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>aktiverad</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="63"/>
         <location filename="../qml/pages/MainPage.qml" line="75"/>
         <location filename="../qml/pages/MainPage.qml" line="87"/>
         <source>disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>inaktiverad</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="64"/>
         <source>Current WiFi status</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuell WiFi-status</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="75"/>
@@ -114,23 +114,23 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="87"/>
         <source>KilL3r</source>
-        <translation type="unfinished"></translation>
+        <translation>KilL3r</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="88"/>
         <source>Current KilL3r status</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuell KilL3r-status</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="97"/>
         <location filename="../qml/pages/MainPage.qml" line="98"/>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>Läser in ...</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="99"/>
         <source>Last check</source>
-        <translation type="unfinished"></translation>
+        <translation>Senaste kontroll</translation>
     </message>
 </context>
 <context>
@@ -138,17 +138,17 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/pages/NetworksPage.qml" line="9"/>
         <source>Please, turn WiFi on</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivera WiFi</translation>
     </message>
     <message>
         <location filename="../qml/pages/NetworksPage.qml" line="16"/>
         <source>Add trusted network</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till betrott nätverk</translation>
     </message>
     <message>
         <location filename="../qml/pages/NetworksPage.qml" line="35"/>
         <source>bssid</source>
-        <translation type="unfinished"></translation>
+        <translation>bssid</translation>
     </message>
 </context>
 <context>
