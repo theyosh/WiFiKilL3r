@@ -29,7 +29,21 @@ On the coverpage you have the option to reconnect your WiFi, and enable/disable 
 This app is created in order to protect your mobile device from being tracked by wifitrackers in citymalls and other public locations. The idea is that when you leave your trusted networks, there is no need to keep WiFi running. So this app will shutdown the WiFi device for you. This way it will save battery power, but more important, you can&apos;t be tracked!
 
 WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
-        <translation type="unfinished"></translation>
+        <translation>Den här appen övervakar din enhets WiFi-status och stänger av det när telefonen inte längre är ansluten till ett betrott nätverk. Den visar också en avisering, när WiFi stängs av.
+
+- Du kan aktivera eller avaktivera WiFi genom att trycka på WiFi-indikatorn
+- Du kan aktivera eller avaktivera WiFi KilL3r-tjänsten genom att trycka på KilL3r-indikatorn
+- Senaste kontrollen visas i appens underkant
+
+Använd alternativet &apos;Hantera betrodda nätverk&apos; i toppmenyn, för att lägga till eller ta bort betrodda WiFi-nät. Tillse att WiFi är aktiverat. Tryck på nätverksnamnet för att lägga till eller ta bort betrodda nät. Uppdatering sker omedelbart!
+
+På programminiatyren har du alternativen att återansluta WiFi och att aktivera/avaktivera bakgrundstjänsten
+
+*Varför*
+Appen har skapats för att skydda din mobila enhet från att bli spårad av WiFi-spårare, i köpcenter och andra offentliga miljöer. Idéen är att när du lämnar ditt betrodda nätverk, har du inte längre något behov av en aktiv WiFi-uppkoppling. Därför stänger den här appen av WiFi-modulen för dig. Det kommer att spara batterikraft, men kanske viktigare... du kan inte spåras via WiFi.
+
+WiFiKilL3r har skapats av TheYOSH https://theyosh.nl
+(c) 2016</translation>
     </message>
 </context>
 <context>
@@ -42,7 +56,7 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/cover/CoverPage.qml" line="22"/>
         <source>Last check</source>
-        <translation type="unfinished"></translation>
+        <translation>Senaste kontrollen</translation>
     </message>
     <message>
         <location filename="../qml/cover/CoverPage.qml" line="22"/>
@@ -65,7 +79,7 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="21"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="37"/>
@@ -104,12 +118,12 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="75"/>
         <source>Hotspot</source>
-        <translation type="unfinished"></translation>
+        <translation>Hotspot</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="76"/>
         <source>Current Hotspot status</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuell hotspot-status</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="87"/>
@@ -156,44 +170,44 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="20"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="25"/>
         <source>Here you can enable or disable settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Här kan du aktivera eller avaktivera inställningar.</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="40"/>
         <source>Accesspoint MAC verification</source>
-        <translation type="unfinished"></translation>
+        <translation>MAC-verifiering för åtkomstpunkt</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="40"/>
         <location filename="../qml/pages/SettingsPage.qml" line="51"/>
         <source>enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>aktiverad</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="40"/>
         <location filename="../qml/pages/SettingsPage.qml" line="51"/>
         <source>disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>avaktiverad</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="41"/>
         <source>Current Accesspoint MAC verification status</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuell status för MAC-verifiering</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="51"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Aviseringar</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="52"/>
         <source>Current notification status</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuell aviseringsstatus</translation>
     </message>
 </context>
 </TS>
