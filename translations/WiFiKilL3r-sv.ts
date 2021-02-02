@@ -136,83 +136,18 @@ WiFiKilL3r app is created by TheYOSH https://theyosh.nl</source>
 <context>
     <name>NetworksPage</name>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="13"/>
-        <source>About WiFiKilL3r</source>
+        <location filename="../qml/pages/NetworksPage.qml" line="9"/>
+        <source>Please, turn WiFi on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="17"/>
-        <source>Manage trusted networks</source>
+        <location filename="../qml/pages/NetworksPage.qml" line="16"/>
+        <source>Add trusted network</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="21"/>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="37"/>
-        <source>WiFiKilL3r</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="54"/>
-        <source>Current status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="63"/>
-        <source>WiFi</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="63"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="75"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="87"/>
-        <source>enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="63"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="75"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="87"/>
-        <source>disabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="64"/>
-        <source>Current WiFi status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="75"/>
-        <source>Hotspot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="76"/>
-        <source>Current Hotspot status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="87"/>
-        <source>KilL3r</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="88"/>
-        <source>Current KilL3r status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="97"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="98"/>
-        <source>Loading...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="99"/>
-        <source>Last check</source>
+        <location filename="../qml/pages/NetworksPage.qml" line="35"/>
+        <source>bssid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

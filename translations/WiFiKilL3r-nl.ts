@@ -149,84 +149,79 @@ WiFiKilL3r app is gemaakt door TheYOSH https://theyosh.nl</translation>
 <context>
     <name>NetworksPage</name>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="13"/>
         <source>About WiFiKilL3r</source>
-        <translation>Over WiFiKilL3r</translation>
+        <translation type="vanished">Over WiFiKilL3r</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="17"/>
         <source>Manage trusted networks</source>
-        <translation>Beheer vertrouwde netwerken</translation>
+        <translation type="vanished">Beheer vertrouwde netwerken</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="21"/>
         <source>Settings</source>
-        <translation>Instellingen</translation>
+        <translation type="vanished">Instellingen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="37"/>
         <source>WiFiKilL3r</source>
-        <translation>WiFiKilL3r</translation>
+        <translation type="vanished">WiFiKilL3r</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="54"/>
         <source>Current status</source>
-        <translation>Huidige status</translation>
+        <translation type="vanished">Huidige status</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="63"/>
         <source>WiFi</source>
-        <translation>Wifi</translation>
+        <translation type="vanished">Wifi</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="63"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="75"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="87"/>
         <source>enabled</source>
-        <translation>geactiveerd</translation>
+        <translation type="vanished">geactiveerd</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="63"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="75"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="87"/>
         <source>disabled</source>
-        <translation>gedeactiveerd</translation>
+        <translation type="vanished">gedeactiveerd</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="64"/>
         <source>Current WiFi status</source>
-        <translation>Huidige wifi status</translation>
+        <translation type="vanished">Huidige wifi status</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="75"/>
         <source>Hotspot</source>
-        <translation>Hotspot</translation>
+        <translation type="vanished">Hotspot</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="76"/>
         <source>Current Hotspot status</source>
-        <translation>Huidige hotspot status</translation>
+        <translation type="vanished">Huidige hotspot status</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="87"/>
         <source>KilL3r</source>
-        <translation>KilL3r</translation>
+        <translation type="vanished">KilL3r</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="88"/>
         <source>Current KilL3r status</source>
-        <translation>Huidige KilL3r status</translation>
+        <translation type="vanished">Huidige KilL3r status</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="97"/>
-        <location filename="../qml/pages/NetworksPage.qml" line="98"/>
         <source>Loading...</source>
-        <translation>Laden...</translation>
+        <translation type="vanished">Laden...</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NetworksPage.qml" line="99"/>
         <source>Last check</source>
-        <translation>Laatste controle</translation>
+        <translation type="vanished">Laatste controle</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/NetworksPage.qml" line="9"/>
+        <source>Please, turn WiFi on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/NetworksPage.qml" line="16"/>
+        <source>Add trusted network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/NetworksPage.qml" line="35"/>
+        <source>bssid</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
