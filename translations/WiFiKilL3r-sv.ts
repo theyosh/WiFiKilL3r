@@ -42,8 +42,7 @@ På programminiatyren har du alternativen att återansluta WiFi och att aktivera
 *Varför*
 Appen har skapats för att skydda din mobila enhet från att bli spårad av WiFi-spårare, i köpcenter och andra offentliga miljöer. Idéen är att när du lämnar ditt betrodda nätverk, har du inte längre något behov av en aktiv WiFi-uppkoppling. Därför stänger den här appen av WiFi-modulen för dig. Det kommer att spara batterikraft, men kanske viktigare... du kan inte spåras via WiFi.
 
-WiFiKilL3r har skapats av TheYOSH https://theyosh.nl
-(c) 2016</translation>
+WiFiKilL3r har skapats av TheYOSH https://theyosh.nl</translation>
     </message>
 </context>
 <context>
