@@ -15,7 +15,7 @@ ApplicationWindow
     property bool mac_verification_enabled: true
     property bool notifications_enabled: true
     property string currentwifi: ''
-    property string version: '0.12-1'
+    property string version: '0.12-3'
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")

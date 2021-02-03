@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Wed Feb 3 2021 TheYOSH <theyosh@theyosh.nl> 0.12-3
+- Fixed Swedish translation. Thanks to @eson57.
+
 * Tue Feb 2 2021 TheYOSH <theyosh@theyosh.nl> 0.12-2
 - Fixed Networkspage and translations.
 
