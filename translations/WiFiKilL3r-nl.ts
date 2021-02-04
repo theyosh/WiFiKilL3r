@@ -177,34 +177,34 @@ WiFiKilL3r app is gemaakt door TheYOSH https://theyosh.nl</translation>
         <translation>Hier kunt u instellingen activeren of deactiveren.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="40"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="41"/>
         <source>Accesspoint MAC verification</source>
         <translation>Accesspoint MAC controle</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="40"/>
-        <location filename="../qml/pages/SettingsPage.qml" line="51"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="41"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="52"/>
         <source>enabled</source>
         <translation>geactiveerd</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="40"/>
-        <location filename="../qml/pages/SettingsPage.qml" line="51"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="41"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="52"/>
         <source>disabled</source>
         <translation>gedeactiveerd</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="41"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="42"/>
         <source>Current Accesspoint MAC verification status</source>
         <translation>Huidige Accesspoint MAC controle status</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="51"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="52"/>
         <source>Notifications</source>
         <translation>Notificaties</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="52"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="53"/>
         <source>Current notification status</source>
         <translation>Huidige notificatie status</translation>
     </message>

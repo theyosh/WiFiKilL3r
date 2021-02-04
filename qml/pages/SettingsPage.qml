@@ -25,6 +25,7 @@ Page {
                 text: qsTr('Here you can enable or disable settings.') + '\n'
                 horizontalAlignment: Text.AlignHCenter
                 font.bold: true
+                wrapMode: Text.WordWrap
                 anchors {
                     left: parent.left
                     right: parent.right

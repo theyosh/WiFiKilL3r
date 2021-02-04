@@ -10,7 +10,7 @@ Name:       WiFiKilL3r
 
 Summary:    WiFiKilL3r
 Version:    0.12
-Release:    3
+Release:    4
 Group:      Qt/Qt
 License:    LICENSE
 URL:        https://theyosh.nl
